@@ -1,0 +1,10 @@
+{
+    "name": "MaiaApp"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": "2.4.6"
+    , "jade": ">= 0.0.1"
+    , "stylus": ">= 0.0.1"
+  }
+}

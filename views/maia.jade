@@ -1,0 +1,51 @@
+!!!
+html
+  head
+    title= 'Maia'
+    meta(name="viewport", content="width=device-width; initial-scale=1.0; maximum-scale=1.0;")
+    link(rel='stylesheet', href='/stylesheets/maia.css')
+    // script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js')
+    // script(type='text/javascript', src='/javascripts/lib/sencha-touch.js')
+    // script(type='text/javascript', src='/javascripts/index.js')
+    script(type='text/javascript', src='/javascripts/lib/zepto.min.js')
+    script(type='text/javascript', src='/javascripts/lib/zepto_fx.js')
+    script(type='text/javascript', src='/javascripts/lib/underscore-min.js')
+    script(type='text/javascript', src='/javascripts/lib/backbone-min.js')
+    script(type='text/javascript')
+      maia = {};
+    script(type='text/javascript', src='/javascripts/utils.js')
+    script(type='text/javascript', src='/javascripts/ui.js')
+    script(type='text/javascript', src='/javascripts/models.js')
+    script(type='text/javascript', src='/javascripts/dashboard.js')
+    script(type='text/javascript')
+      $(document).ready(function() {
+        new maia.Dashboard( $('.dashboard') );
+        $('.sleep .add').trigger('click');
+      });
+  body
+    .dashboard.unselectable
+      .date Today
+      ul.events
+        li.sleep Sleep(ing)
+          .add +
+          .add_event(style='display:none')
+            .start.field
+              label since
+              em.t ###
+              div
+                span(data-minutes="-60") -1hr
+                span(data-minutes="-5") -5min
+                span(data-minutes="+5") +5min
+                span(data-minutes="+60") +1hr
+            .end.field
+              label until
+              em.t ###
+              div
+                span(data-minutes="-60") -1hr
+                span(data-minutes="-5") -5min
+                span(data-minutes="+5") +5min
+                span(data-minutes="+60") +1hr
+        li.cry Cry(ing)
+          .add +
+        li.notes Notes
+          .add +
