@@ -27,7 +27,7 @@
         $start = $container.find('.start'),
         $end = $container.find('.end'),
         $incr = $container.find('[data-minutes]');
-xxx = event;//temp debug
+
     $container.find('.add_event').fadeIn();
     
     $.each($incr, function(i, e) {

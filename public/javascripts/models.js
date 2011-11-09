@@ -1,29 +1,30 @@
 (function() {
-  var START = 'start', END = 'end', IMPLIED_END = 'impliedEnd';
+  var START = 'start', END = 'end', IMPLIED_END = 'impliedEnd',
+      FORMATTED_START = 'fStart', FORMATTED_END = 'fEnd';
   maia.Event = Backbone.Model.extend({
     initialize: function(hash) {
-      if(!this.get('end')) {
+      if(!this.get(END)) {
         var _this = this,
             implied = {
-              impliedEnd: maia.Event.getNow(),
               impliedInterval: setInterval(function() { _this.updateImpliedEnd(); }, 1000)
             };
+        implied[IMPLIED_END] = maia.Event.getNow();
         this.set(implied);
       }
     },
     
     set: function(attributes, options) {
-      if(attributes.start) {
-        attributes.fStart = this.format(attributes.start);
+      if(attributes[START]) {
+        attributes.fStart = this.format(attributes[START]);
       }
-      if(attributes.end) {
-        attributes.fEnd = this.format(attributes.end);
-        if(this.get('impliedEnd')) {
-          attributes.impliedEnd = null;
+      if(attributes[END]) {
+        attributes[FORMATTED_END] = this.format(attributes[END]);
+        if(this.get(IMPLIED_END)) {
+          attributes[IMPLIED_END] = null;
         }
       }
-      if(attributes.impliedEnd) {
-        attributes.fEnd = this.format(attributes.impliedEnd, true);
+      if(attributes[IMPLIED_END]) {
+        attributes[FORMATTED_END] = this.format(attributes[IMPLIED_END], true);
       }
       Backbone.Model.prototype.set.call(this, attributes, options);
     },
@@ -33,13 +34,13 @@
     },
     
     isEndImplied: function() {
-      return !!this.get('impliedEnd');
+      return !!this.get(IMPLIED_END);
     },
     
     increment: function(field, amount, snap) {
-      if(field == 'end' && !this.get('end')) {
+      if(field == END && !this.get(END)) {
         clearInterval(this.get('impliedInterval'));
-        this.set({ end:new Date(this.get('impliedEnd')) });
+        this.set({ end:new Date(this.get(IMPLIED_END)) });
       }
       else if(!this.get(field)) {
         throw new Error('Unknown field, ' + field);
@@ -51,8 +52,9 @@
     },
     
     updateImpliedEnd: function() {
-      console.log("tick");
-      this.set({ impliedEnd: maia.Event.getNow() });
+      var implied = {};
+      implied[IMPLIED_END] = maia.Event.getNow();
+      this.set(implied);
     }
   },
   
