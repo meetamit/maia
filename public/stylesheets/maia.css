@@ -77,6 +77,10 @@ body {
   border:1px solid #00a;
 }
 
+.events .add_event span.disabled {
+  background-color:#f44;
+}
+
 .events .add_event .t {
   font-style:normal;
   font-size:28px;

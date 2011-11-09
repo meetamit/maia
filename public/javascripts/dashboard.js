@@ -26,28 +26,44 @@
         }),
         $start = $container.find('.start'),
         $end = $container.find('.end'),
-        $incr = $container.find('[data-minutes]');
+        btns = $.map($container.find('[data-minutes]'), newIncrBtn);
 
     $container.find('.add_event').fadeIn();
-    
-    $.each($incr, function(i, e) {
-      var $this = $(e),
-          btn = new maia.ContinuousButton($this);
-          
-      btn.bind('tick', function() {
-        var field = $this.parents().indexOf($start[0]) > -1 ? 'start' : 'end',
-            amount = parseInt($this.data('minutes'), 10) * 60000;
-
-        event.increment(field, amount, maia.FIVE_MINUTES);
-      });
-    });
-
-    function update() {
-      $start.find('.t').text(event.get('fStart').toString());
-      $end.find('.t').text(event.get('fEnd').toString());
-    };
-    
     update();
     event.bind('change', update);
+
+    function update(model) {
+      if(!model || model.hasChanged('fStart')) {
+        $start.find('.t').text(event.get('fStart').toString());
+      }
+      
+      if(!model || model.hasChanged('fEnd')) {
+        $end.find('.t').text(event.get('fEnd').toString());
+      }
+      
+      $.each(btns, function(i, btn) { btn.updateDisability(); });
+    };
+    
+    function newIncrBtn(element) {
+      var $btn = $(element),
+          btn = new maia.ContinuousButton($btn);
+          
+      btn.field = $btn.parents().indexOf($start[0]) > -1 ? 'start' : 'end';
+      btn.amount = parseInt($btn.data('minutes'), 10) * 60000;
+      btn.updateDisability = function() {
+        // console.log(this.field, this.amount, event.canIncrement(this.field, this.amount));
+        if(event.canIncrement(this.field, this.amount)) { 
+          $btn.removeClass('disabled');
+        }
+        else {
+          $btn.addClass('disabled');
+        }
+      };
+
+      btn.bind('tick', function() {
+        event.increment(this.field, this.amount, maia.FIVE_MINUTES);
+      });
+      return btn;
+    }
   }
 })();

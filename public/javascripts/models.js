@@ -51,6 +51,18 @@
       this.set(setter);
     },
     
+    canIncrement: function(field, amount, snap) {
+      var current = this.get(field) || (field == END ? this.get(IMPLIED_END) : null);
+      if(!current) {
+        throw new Error('Unknown field, ' + field);
+      }
+      var future = maia.Event.getIncremented(current, amount, snap);
+      
+      if( field == START && future <= (this.get(END) || this.get(IMPLIED_END)) ) return true;
+      else if ( field == END && future >= this.get(START) ) return true;
+      else return false;
+    },
+    
     updateImpliedEnd: function() {
       var implied = {};
       implied[IMPLIED_END] = maia.Event.getNow();
