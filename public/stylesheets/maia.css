@@ -78,7 +78,7 @@ body {
 }
 
 .events .add_event span.disabled {
-  background-color:#f44;
+  opacity:.1;
 }
 
 .events .add_event .t {

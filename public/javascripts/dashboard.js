@@ -24,8 +24,8 @@
           start: maia.Event.getNow(),//new Date(2000,0,1,2,50),//maia.Event.getNow(1200000)
           end: null//maia.Event.getNow()//null
         }),
-        $start = $container.find('.start'),
-        $end = $container.find('.end'),
+        $start = $container.find('.start.field'),
+        $end = $container.find('.end.field'),
         btns = $.map($container.find('[data-minutes]'), newIncrBtn);
 
     $container.find('.add_event').fadeIn();

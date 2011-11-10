@@ -1,4 +1,7 @@
 (function() {
+  
+/////////////////////////////// ContinuousButton \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
   maia.ContinuousButton = ContinuousButton;
   var intervalId = null;
   function clearIt() {
@@ -32,4 +35,12 @@
       rate = Math.max(rate1, Math.pow(rate, .95));
     }
   }
+  
+
+/////////////////////////////// RangeSlider \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+  maia.RangeSlider = RangeSlider;
+  function RangeSlider($container) {
+  }
+
 })();
