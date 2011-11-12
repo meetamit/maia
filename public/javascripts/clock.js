@@ -61,12 +61,38 @@
     this.updateSize();
     range.bind('change', update);
     
-    $start.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', function(e) {
-      e.preventDefault();
-    });
-    $end.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', function(e) {
-      e.preventDefault();
-    });
+    $start.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
+    $end.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
 
+    var dragged = null,
+        $dragged = null,
+        START = 'start',
+        END = 'end',
+        pt0;
+    function dragStart(e) {
+      e.preventDefault();
+      if(e.target == $start[0]) {
+        dragged = START;
+        $dragged = $start;
+      }
+      else if(e.target == $end[0]) {
+        dragged = END;
+        $dragged = $end;
+      }
+      console.log(e);
+      pt0 = { x:e.layerX - ctr.x, y:e.layerY - ctr.y };
+      
+      $(document).bind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
+      $(document).bind($.browser.touchDevice ? 'touchend' : 'mouseup', dragEnd);
+    }
+    
+    function dragMove(e) {
+      console.log(e.layerX - ctr.x, e.layerY - ctr.y);
+    }
+    
+    function dragEnd(e) {
+      $(document).unbind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
+      $(document).unbind($.browser.touchDevice ? 'touchend' : 'mouseup', dragEnd);
+    }
   }
 })();
