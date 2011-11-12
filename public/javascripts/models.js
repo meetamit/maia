@@ -1,14 +1,15 @@
 (function() {
   var START = 'start', END = 'end', IMPLIED_END = 'impliedEnd',
       FORMATTED_START = 'fStart', FORMATTED_END = 'fEnd';
-  maia.Event = Backbone.Model.extend({
+      
+  var Event = maia.Event = Backbone.Model.extend({
     initialize: function(hash) {
       if(!this.get(END)) {
         var _this = this,
             implied = {
               impliedInterval: setInterval(function() { _this.updateImpliedEnd(); }, 1000)
             };
-        implied[IMPLIED_END] = maia.Event.getNow();
+        implied[IMPLIED_END] = Event.getNow();
         this.set(implied);
       }
     },
@@ -47,7 +48,7 @@
       }
       
       var setter = {};
-      setter[field] = maia.Event.getIncremented(this.get(field), amount, snap);
+      setter[field] = Event.getIncremented(this.get(field), amount, snap);
       this.set(setter);
     },
     
@@ -56,18 +57,20 @@
       if(!current) {
         throw new Error('Unknown field, ' + field);
       }
-      var future = maia.Event.getIncremented(current, amount, snap);
+      var future = Event.getIncremented(current, amount, snap);
       
       if( field == START && future <= (this.get(END) || this.get(IMPLIED_END)) ) return true;
-      else if ( field == END && future >= this.get(START) ) return true;
+      else if ( field == END && future >= this.get(START) && future <= Event.getNow() ) return true;
       else return false;
     },
     
     updateImpliedEnd: function() {
       var implied = {};
-      implied[IMPLIED_END] = maia.Event.getNow();
+      implied[IMPLIED_END] = Event.getNow();
       this.set(implied);
-    }
+    },
+
+    getSpan: function() { return (this.get(END) || this.get(IMPLIED_END)) - this.get(START); }
   },
   
   // STATIC methods

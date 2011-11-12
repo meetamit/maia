@@ -21,14 +21,19 @@
   
   function AddEvent(listEntry, $container) {
     var event = new maia.Event({
-          start: maia.Event.getNow(),//new Date(2000,0,1,2,50),//maia.Event.getNow(1200000)
+          start: maia.Event.getNow(1200000),//new Date(2000,0,1,2,50),//maia.Event.getNow(1200000)
           end: null//maia.Event.getNow()//null
         }),
         $start = $container.find('.start.field'),
         $end = $container.find('.end.field'),
+        // slider = new maia.RangeSlider($container.find('.slider'), event),
+        clock = new maia.Clock($container.find('.clock'), event),
         btns = $.map($container.find('[data-minutes]'), newIncrBtn);
 
-    $container.find('.add_event').fadeIn();
+    $container.find('.add_event').fadeIn(function() {
+      // slider.updateWidth();
+      clock.updateSize();
+    });
     update();
     event.bind('change', update);
 
@@ -51,12 +56,11 @@
       btn.field = $btn.parents().indexOf($start[0]) > -1 ? 'start' : 'end';
       btn.amount = parseInt($btn.data('minutes'), 10) * 60000;
       btn.updateDisability = function() {
-        // console.log(this.field, this.amount, event.canIncrement(this.field, this.amount));
         if(event.canIncrement(this.field, this.amount)) { 
-          $btn.removeClass('disabled');
+          btn.enable();
         }
         else {
-          $btn.addClass('disabled');
+          btn.disable();
         }
       };
 

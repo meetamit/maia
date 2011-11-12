@@ -4,9 +4,7 @@ html
     title= 'Maia'
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
     link(rel='stylesheet', href='/stylesheets/maia.css')
-    // script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js')
-    // script(type='text/javascript', src='/javascripts/lib/sencha-touch.js')
-    // script(type='text/javascript', src='/javascripts/index.js')
+    link(rel='stylesheet', href='/stylesheets/clock.css')
     script(type='text/javascript', src='/javascripts/lib/zepto.min.js')
     script(type='text/javascript', src='/javascripts/lib/zepto_fx.js')
     script(type='text/javascript', src='/javascripts/lib/underscore-min.js')
@@ -15,6 +13,7 @@ html
       maia = {};
     script(type='text/javascript', src='/javascripts/utils.js')
     script(type='text/javascript', src='/javascripts/ui.js')
+    script(type='text/javascript', src='/javascripts/clock.js')
     script(type='text/javascript', src='/javascripts/models.js')
     script(type='text/javascript', src='/javascripts/dashboard.js')
     script(type='text/javascript')
@@ -29,6 +28,15 @@ html
         li.sleep Sleep(ing)
           .add +
           .add_event(style='display:none')
+          
+            div(style='text-align:center; margin-top:70px;')
+              .clock
+                canvas.bg
+                canvas.fg
+                .handles
+                  .end
+                  .start
+              
             .start.field
               label since
               em.t ###
@@ -37,6 +45,7 @@ html
                 span(data-minutes="-5") -5min
                 span(data-minutes="+5") +5min
                 span(data-minutes="+60") +1hr
+                
             .end.field
               label until
               em.t ###
