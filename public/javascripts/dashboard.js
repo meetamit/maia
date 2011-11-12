@@ -15,7 +15,7 @@
         _this = this;
     
     $add.bind('click', function() {
-      new AddEvent(_this, $container);
+      new AddEvent(_this, $container.find('.add_event'));
     });
   }
   
@@ -26,16 +26,14 @@
         }),
         $start = $container.find('.start.field'),
         $end = $container.find('.end.field'),
-        // slider = new maia.RangeSlider($container.find('.slider'), event),
         clock = new maia.Clock($container.find('.clock'), event),
         btns = $.map($container.find('[data-minutes]'), newIncrBtn);
 
-    $container.find('.add_event').fadeIn(function() {
-      // slider.updateWidth();
-      clock.updateSize();
-    });
     update();
     event.bind('change', update);
+    $container.css({display:'block'});
+    clock.updateSize();
+    $container.fadeIn();
 
     function update(model) {
       if(!model || model.hasChanged('fStart')) {
