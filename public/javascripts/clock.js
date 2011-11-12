@@ -4,8 +4,8 @@
   function Clock($container, range) {
     var $bg = $container.find('canvas.bg'),
         $fg = $container.find('canvas.fg'),
-        $start = $container.find('.handles .start'),
-        $end = $container.find('.handles .end'),
+        $start = $container.find('.start.handle'),
+        $end = $container.find('.end.handle'),
         bgCanvas = $bg[0], fgCanvas = $fg[0],
         bg = bgCanvas.getContext("2d"),
         fg = fgCanvas.getContext("2d"),
@@ -17,15 +17,21 @@
           span = range.getSpan();
           
       $start.css({
-        '-webkit-transform': ['translate(', innerRadius * Math.cos(startAngle), 'px,', innerRadius * Math.sin(startAngle), 'px)'].join('')
+        '-webkit-transform': [
+          'translate(', innerRadius * Math.cos(startAngle) + ctr.x, 'px,', innerRadius * Math.sin(startAngle) + ctr.y, 'px) ',
+          'rotate(', startAngle * 180 / Math.PI + 90, 'deg)'
+        ].join('')
       });
       $end.css({
-        '-webkit-transform': ['translate(', innerRadius * Math.cos(endAngle), 'px,', innerRadius * Math.sin(endAngle), 'px)'].join('')
+        '-webkit-transform': [
+          'translate(', innerRadius * Math.cos( endAngle ) + ctr.x, 'px,', innerRadius * Math.sin( endAngle ) + ctr.y, 'px) ',
+          'rotate(', endAngle * 180 / Math.PI + 90, 'deg)'
+        ].join('')
       });
 
       fg.clearRect(0,0,w,h);
       fg.beginPath();
-      fg.arc(ctr.x, ctr.y, innerRadius + 9, startAngle, endAngle, false);
+      fg.arc(ctr.x, ctr.y, innerRadius - 7, startAngle, endAngle, false);
       fg.lineWidth = 15;
       fg.strokeStyle = "black"; // line color
       fg.stroke();
@@ -35,8 +41,8 @@
       w = $fg.width();
       h = $fg.height();
       ctr = { x:w*.5, y:h*.5 };
-      innerRadius = Math.min(w,h) * .35;
-      outerRadius = innerRadius + 20;
+      innerRadius = Math.min(w,h) * .35 + 15;
+      outerRadius = Math.min(w,h) * .35 + 20;
       
       if(w * h) {
         bgCanvas.width = fgCanvas.width = w;
@@ -68,7 +74,7 @@
         $dragged = null,
         START = 'start',
         END = 'end',
-        pt0;
+        d0, dd, pt0, pt1;
     function dragStart(e) {
       e.preventDefault();
       if(e.target == $start[0]) {
@@ -80,14 +86,21 @@
         $dragged = $end;
       }
       console.log(e);
-      pt0 = { x:e.layerX - ctr.x, y:e.layerY - ctr.y };
+      dd = $container.offset();
+      d0 = { x:e.offsetX, y:e.offsetY };
+      console.log(d0.x,d0.y);
+      pt0 = { x:e.pageX - dd.left - ctr.x, y:e.pageY - dd.top - ctr.y };
+      
       
       $(document).bind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
       $(document).bind($.browser.touchDevice ? 'touchend' : 'mouseup', dragEnd);
     }
     
     function dragMove(e) {
-      console.log(e.layerX - ctr.x, e.layerY - ctr.y);
+      // pt1 = 
+      console.log(e.pageX - $container.offset().left - ctr.x, e.pageY - $container.offset().top - ctr.y);
+      // console.log(e.pageX + dd.x, e.pageY + dd.y);
+      // console.log(e.layerX-ctr.x,e.layerY-ctr.y);
     }
     
     function dragEnd(e) {
