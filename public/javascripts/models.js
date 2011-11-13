@@ -31,7 +31,8 @@
     },
     
     format: function(date, hasSeconds) {
-      return date.getHours() + ':' + String(date.getMinutes() + 100).substr(1) + (
+      return (date.getMonth()+1) + '/' +date.getDate() + ' ' + 
+        date.getHours() + ':' + String(date.getMinutes() + 100).substr(1) + (
         hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) : ''
       );
     },

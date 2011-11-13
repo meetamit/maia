@@ -9,4 +9,6 @@
   maia.FIVE_MINUTES = 300000;
   maia.TWELVE_HOURS = 43200000;
   maia.TIME_ZONE_OFFSET = (new Date()).getTimezoneOffset()*60000;
+  
+  Number.prototype.mod = function(n) { return ((this%n)+n)%n; };
 })();
