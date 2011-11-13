@@ -91,30 +91,25 @@
 
     var dragged,
         date0,
-        $dragged = null,
         START = 'start',
         END = 'end',
-        pg, dd, pt0, pt1, a0, a1, d,
-        phaze, dLast, aLast;
+        pg, dd, a0, a1,
+        phaze, aLast;
     function dragStart(e) {
       e.preventDefault();
       if(e.target == $start[0]) {
         dragged = START;
-        $dragged = $start;
         date0 = event.get(START);
       }
       else if(e.target == $end[0]) {
         dragged = END;
-        $dragged = $end;
         date0 = event.get(END) || event.get('impliedEnd');
       }
       dd = $container.offset();
       pg = Clock.extractCoords(e);
-      pt0 = { x:pg.x - dd.left - ctr.x, y:pg.y - dd.top - ctr.y };
-      a0 = Clock.ptToRads(pt0);
+      a0 = Clock.ptToRads({ x:pg.x - dd.left - ctr.x, y:pg.y - dd.top - ctr.y });
       aLast = a0;
       phaze = 0;
-      dLast = 0;
       
       $(document).bind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
       $(document).bind($.browser.touchDevice ? 'touchend' : 'mouseup', dragEnd);
@@ -122,20 +117,15 @@
     
     function dragMove(e) {
       pg = Clock.extractCoords(e);
-      pt1 = { x:pg.x - $container.offset().left - ctr.x, y:pg.y - $container.offset().top - ctr.y };
-      a1 = Clock.ptToRads(pt1);
-      d = a1 - a0;
-      if(a1 - aLast > Math.PI) {
-        phaze -= 1;
-      }
-      else if(a1 - aLast < -Math.PI) {
-        phaze += 1;
-      }
-      dLast = d;
+      a1 = Clock.ptToRads({ x:pg.x - dd.left - ctr.x, y:pg.y - dd.top - ctr.y });
+      if(a1 - aLast > Math.PI) { phaze -= 1; }
+      else if(a1 - aLast < -Math.PI) { phaze += 1; }
       aLast = a1;
       
       var setter = {};
-      setter[dragged] = new Date(Number(date0) + Clock.radsToMs(a1 - a0) + maia.TWELVE_HOURS * phaze);
+      setter[dragged] = new Date(Math.round((
+        Number(date0) + Clock.radsToMs(a1 - a0) + maia.TWELVE_HOURS * phaze
+      ) / maia.FIVE_MINUTES) * maia.FIVE_MINUTES);// Round to 5 minutes
       event.set(setter);
     }
     
