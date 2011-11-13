@@ -26,7 +26,7 @@
     function update() {
       if(!w * h) { return; }
       var startAngle = Clock.dateToRads(event.get("start")),
-          endAngle = Clock.dateToRads(event.get("end") || event.get("impliedEnd")),
+          endAngle = Clock.dateToRads(event.get("end")),
           span = event.getSpan();
           
       $start.css({
@@ -103,7 +103,7 @@
       }
       else if(e.target == $end[0]) {
         dragged = END;
-        date0 = event.get(END) || event.get('impliedEnd');
+        date0 = event.get(END);
       }
       dd = $container.offset();
       pg = Clock.extractCoords(e);
