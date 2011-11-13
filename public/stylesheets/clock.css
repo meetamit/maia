@@ -48,8 +48,8 @@
 
 .clock .start.handle {
   border-radius:20px 0 0 20px;
-  -webkit-transform-origin:37px 8px; /* 37px = 30px(width) + 1px(border) + 8px(bleed) */
-  margin-left:-37px;
+  -webkit-transform-origin:36px 8px; /* 37px = 28px(width) + 8px(bleed) */
+  margin-left:-36px;
   margin-top:-8px
 }
 
