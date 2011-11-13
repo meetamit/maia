@@ -3,7 +3,6 @@
   display:inline-block;
   width:200px;
   height:200px;
-  margin-left:100px;
 }
 
 .clock canvas {
@@ -23,8 +22,8 @@
   position:absolute;
   left:0;
   top:0;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   border:1px solid #00a;
   background-color:#fff;
 }

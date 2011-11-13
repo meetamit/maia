@@ -1,7 +1,20 @@
 (function() {
   maia.Clock = Clock;
-  var TWELVE_HOURS = 43200000;
-  function Clock($container, range) {
+  var NINETY_DEGREES = .5 * Math.PI;
+  Clock.dateToRads = function(date) {
+    return 2*Math.PI * (date % maia.TWELVE_HOURS - maia.TIME_ZONE_OFFSET) / maia.TWELVE_HOURS - NINETY_DEGREES;
+  };
+  Clock.ptToRads = function(pt) {
+    return Math.atan2(pt.y, pt.x) + NINETY_DEGREES;
+  };
+  Clock.radsToMs = function(rads) {
+    return maia.TWELVE_HOURS * rads / (2*Math.PI);
+  };
+  Clock.extractCoords = function(e) {
+    var src = $.browser.touchDevice ? e.targetTouches[0] : e;
+    return { x:src.pageX, y:src.pageY };
+  };
+  function Clock($container, event) {
     var $bg = $container.find('canvas.bg'),
         $fg = $container.find('canvas.fg'),
         $start = $container.find('.start.handle'),
@@ -12,9 +25,9 @@
         w, h, ctr, innerRadius, outerRadius;
     function update() {
       if(!w * h) { return; }
-      var startAngle = 2*Math.PI * (range.get("start") % TWELVE_HOURS) / TWELVE_HOURS,
-          endAngle = 2*Math.PI * ((range.get("end") || range.get("impliedEnd")) % TWELVE_HOURS) / TWELVE_HOURS,
-          span = range.getSpan();
+      var startAngle = Clock.dateToRads(event.get("start")),
+          endAngle = Clock.dateToRads(event.get("end") || event.get("impliedEnd")),
+          span = event.getSpan();
           
       $start.css({
         '-webkit-transform': [
@@ -65,42 +78,47 @@
     };
 
     this.updateSize();
-    range.bind('change', update);
+    event.bind('change', update);
     
     $start.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
     $end.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
 
-    var dragged = null,
+    var dragged,
+        date0,
         $dragged = null,
         START = 'start',
         END = 'end',
-        d0, dd, pt0, pt1;
+        pg, d0, dd, pt0, pt1, a0, a1;
     function dragStart(e) {
       e.preventDefault();
       if(e.target == $start[0]) {
         dragged = START;
         $dragged = $start;
+        date0 = event.get(START);
       }
       else if(e.target == $end[0]) {
         dragged = END;
         $dragged = $end;
+        date0 = event.get(END) || event.get('impliedEnd');
       }
-      console.log(e);
       dd = $container.offset();
-      d0 = { x:e.offsetX, y:e.offsetY };
-      console.log(d0.x,d0.y);
-      pt0 = { x:e.pageX - dd.left - ctr.x, y:e.pageY - dd.top - ctr.y };
-      
+      d0 = { x:dragged == START ? 30 - e.offsetX : e.offsetX, y:e.offsetY };
+      pg = Clock.extractCoords(e),
+      pt0 = { x:pg.x - dd.left - ctr.x, y:pg.y - dd.top - ctr.y };
+      a0 = Clock.ptToRads(pt0);
       
       $(document).bind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
       $(document).bind($.browser.touchDevice ? 'touchend' : 'mouseup', dragEnd);
     }
     
     function dragMove(e) {
-      // pt1 = 
-      console.log(e.pageX - $container.offset().left - ctr.x, e.pageY - $container.offset().top - ctr.y);
-      // console.log(e.pageX + dd.x, e.pageY + dd.y);
-      // console.log(e.layerX-ctr.x,e.layerY-ctr.y);
+      pg = Clock.extractCoords(e),
+      pt1 = { x:pg.x - $container.offset().left - ctr.x, y:pg.y - $container.offset().top - ctr.y };
+      a1 = Clock.ptToRads(pt1);
+      
+      var setter = {};
+      setter[dragged] = new Date(Number(date0) + Clock.radsToMs(a1 - a0));
+      event.set(setter);
     }
     
     function dragEnd(e) {

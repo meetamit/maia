@@ -7,4 +7,6 @@
 
   maia.ONE_MINUTE = 60000;
   maia.FIVE_MINUTES = 300000;
+  maia.TWELVE_HOURS = 43200000;
+  maia.TIME_ZONE_OFFSET = (new Date()).getTimezoneOffset()*60000;
 })();

@@ -31,7 +31,9 @@
     },
     
     format: function(date, hasSeconds) {
-      return date.getHours() + ':' + String(date.getMinutes() + 100).substr(1) + (hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) : '');
+      return date.getHours() + ':' + String(date.getMinutes() + 100).substr(1) + (
+        hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) : ''
+      );
     },
     
     isEndImplied: function() {
@@ -85,6 +87,7 @@
     
     getNow: function(minus) {
       var t = new Date(Date.now() - (minus || 0));
+      // t = new Date(Date.UTC(t.getFullYear(), t.getMonth(), t.getDate(), t.getHours(), t.getMinutes(), t.getSeconds()));
       t.setMilliseconds(0);
       return t;
     }
