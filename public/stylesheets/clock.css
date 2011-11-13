@@ -22,16 +22,17 @@
   position:absolute;
   left:0;
   top:0;
-  width:38px;
-  height:38px;
+  width:44px;
+  height:44px;
+/*  background-color:#fcc;*/
 }
 
 .clock .handle .inner {
   position:absolute;
-  top:5px;
-  bottom:5px;
-  left:5px;
-  right:5px;
+  top:8px;
+  bottom:8px;
+  left:8px;
+  right:8px;
   border:1px solid #00a;
   background-color:#fff;
   pointer-events: none;
@@ -47,14 +48,14 @@
 
 .clock .start.handle {
   border-radius:20px 0 0 20px;
-  -webkit-transform-origin:34px 5px; /* 34px = 30px(width) - 1px(border) + 5px(bleed) */
-  margin-left:-34px;
-  margin-top:-5px
+  -webkit-transform-origin:37px 8px; /* 37px = 30px(width) + 1px(border) + 8px(bleed) */
+  margin-left:-37px;
+  margin-top:-8px
 }
 
 .clock .end.handle {
   border-radius:0 20px 20px 0;
-  -webkit-transform-origin:6px 5px; /* 6px = 1px(border) + 5px(bleed) */
-  margin-left:-6px;
-  margin-top:-5px;
+  -webkit-transform-origin:9px 8px; /* 9px = 1px(border) + 8px(bleed) */
+  margin-left:-9px;
+  margin-top:-8px;
 }
