@@ -139,7 +139,7 @@
       if(dragged == END   && date1ms < event.get(START)) {
         setter[START] = new Date(date1ms);
       }
-      if(dragged == END   && date1ms == Date.now()) {
+      if((dragged == END || !event.isEndImplied()) && date1ms == Date.now()) {
         setter['impliedEnd'] = setter[END];
       }
 
