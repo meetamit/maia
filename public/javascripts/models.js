@@ -7,7 +7,7 @@
       if(!this.get(END)) {
         var _this = this,
             implied = {
-              impliedInterval: setInterval(function() { _this.updateImpliedEnd(); }, 1000)
+              // impliedInterval: setInterval(function() { _this.updateImpliedEnd(); }, 1000)
             };
         implied[IMPLIED_END] = Event.getNow();
         this.set(implied);
@@ -19,6 +19,10 @@
         attributes[FORMATTED_START] = this.format(attributes[START]);
       }
       if(attributes[IMPLIED_END]) {
+        if(!this.isEndImplied()) {
+          var _this = this;
+          attributes.impliedInterval = setInterval(function() { _this.updateImpliedEnd(); }, 1000);
+        }
         attributes[END] = attributes[IMPLIED_END];
       }
       else if(attributes[END] && this.isEndImplied()) {
@@ -37,10 +41,10 @@
     },
     
     format: function(date, hasSeconds) {
-      return (date.getMonth()+1) + '/' +date.getDate() + ' ' + 
+      return (//(date.getMonth()+1) + '/' +date.getDate() + ' ' + 
         date.getHours() + ':' + String(date.getMinutes() + 100).substr(1) + (
         hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) : ''
-      );
+      ));
     },
     
     isEndImplied: function() {

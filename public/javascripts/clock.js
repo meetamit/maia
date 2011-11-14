@@ -43,17 +43,19 @@
       });
 
       fg.clearRect(0,0,w,h);
-      fg.fillStyle = "rgba(187,187,187,.2)";//"#bbb";
+      fg.fillStyle = "rgba(187,187,187,.2)";
       for(var i = Math.floor(span / maia.TWELVE_HOURS); i >= 1; i--) {
         fg.beginPath();
         fg.arc(ctr.x, ctr.y, innerRadius, 0, 2 * Math.PI, false);
         fg.arc(ctr.x, ctr.y, 10, 2 * Math.PI, 0, true);
         fg.fill();
       }
-      fg.beginPath();
-      fg.arc(ctr.x, ctr.y, innerRadius, startAngle, endAngle, false);
-      fg.arc(ctr.x, ctr.y, 10, endAngle, startAngle, true);
-      fg.fill();
+      if(span > 0) {
+        fg.beginPath();
+        fg.arc(ctr.x, ctr.y, innerRadius, startAngle, endAngle, false);
+        fg.arc(ctr.x, ctr.y, 10, endAngle, startAngle, true);
+        fg.fill();
+      }
     }
 
     this.updateSize = function () {
@@ -90,7 +92,7 @@
     $end.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
 
     var dragged,
-        date0,
+        date0, date1ms,
         START = 'start',
         END = 'end',
         pg, dd, a0, a1,
@@ -112,7 +114,7 @@
       phaze = 0;
       
       $(document).bind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
-      $(document).bind($.browser.touchDevice ? 'touchend' : 'mouseup', dragEnd);
+      $(document).bind($.browser.touchDevice ? 'touchend'  : 'mouseup', dragEnd);
     }
     
     function dragMove(e) {
@@ -121,15 +123,31 @@
       if(a1 - aLast > Math.PI) { phaze -= 1; }
       else if(a1 - aLast < -Math.PI) { phaze += 1; }
       aLast = a1;
+      date1ms = Math.round((
+        Number(date0) + Clock.radsToMs(a1 - a0) + maia.TWELVE_HOURS * phaze
+      ) / maia.FIVE_MINUTES) * maia.FIVE_MINUTES;// Round to 5 minutes
+      
+      date1ms = Math.min(date1ms, Date.now());
       
       var setter = {};
-      setter[dragged] = new Date(Math.round((
-        Number(date0) + Clock.radsToMs(a1 - a0) + maia.TWELVE_HOURS * phaze
-      ) / maia.FIVE_MINUTES) * maia.FIVE_MINUTES);// Round to 5 minutes
+      setter.isTransient = true;
+      setter[dragged] = new Date(date1ms);
+      
+      if(dragged == START && date1ms > event.get(END) && !event.isEndImplied()) {
+        setter[END] = new Date(date1ms);
+      }
+      if(dragged == END   && date1ms < event.get(START)) {
+        setter[START] = new Date(date1ms);
+      }
+      if(dragged == END   && date1ms == Date.now()) {
+        setter['impliedEnd'] = setter[END];
+      }
+
       event.set(setter);
     }
     
     function dragEnd(e) {
+      event.set({ isTransient: false });
       $(document).unbind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
       $(document).unbind($.browser.touchDevice ? 'touchend' : 'mouseup', dragEnd);
     }

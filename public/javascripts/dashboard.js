@@ -44,7 +44,9 @@
         $end.find('.t').text(event.get('fEnd').toString());
       }
       
-      $.each(btns, function(i, btn) { btn.updateDisability(); });
+      if(!event.get('isTransient')) {
+        $.each(btns, function(i, btn) { btn.updateDisability(); });
+      }
     };
     
     function newIncrBtn(element) {
