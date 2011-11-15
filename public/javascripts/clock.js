@@ -59,16 +59,7 @@
         fg.fill();
       }
 
-      var isTransient = event.get('isTransient');
-      // if(event.hasChanged('isTransient')) {
-      //   if(isTransient) {
-      //     $label.fadeIn(100);
-      //   }
-      //   else {
-      //     $label.fadeOut();
-      //   }
-      // }
-      if(isTransient) {
+      if(event.get('isTransient')) {
         var angle = dragged == END ? endAngle : startAngle;
         angle = (angle + Math.PI/2).mod(2 * Math.PI);
         var f = angle / 2,
@@ -76,12 +67,7 @@
         $label.css({
           left:   pt.x,
           bottom: pt.y + 45 * Math.pow( Math.sin(angle / 2), 2 ) + 10
-        }).text(dragged == END ? event.get('fEnd') : event.get('fStart'));
-        
-        // fg.fillStyle = "#00a";
-        // fg.beginPath();
-        // fg.arc(pt.x, h - pt.y, 3, 0, 2 * Math.PI, false);
-        // fg.fill();
+        }).html(dragged == END ? event.get('fEnd') : event.get('fStart'));
       }
     }
 

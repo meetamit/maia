@@ -46,7 +46,9 @@
       hours = hours == 12 ? 12 : hours % 12;
       return [
         // (date.getMonth()+1) + '/' + date.getDate() + ' ',
-        hours + ':' + String(date.getMinutes() + 100).substr(1),
+        '<em>',
+          hours + ':' + String(date.getMinutes() + 100).substr(1),
+        '</em>',
         hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) : '',
         isPM ? 'pm' : 'am'
       ].join('');

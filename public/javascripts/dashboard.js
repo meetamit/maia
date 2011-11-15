@@ -37,11 +37,11 @@
 
     function update(model) {
       if(!model || model.hasChanged('fStart')) {
-        $start.find('.t').text(event.get('fStart').toString());
+        $start.find('.t').html(event.get('fStart').toString());
       }
       
       if(!model || model.hasChanged('fEnd')) {
-        $end.find('.t').text(event.get('fEnd').toString());
+        $end.find('.t').html(event.get('fEnd').toString());
       }
       
       if(!event.get('isTransient')) {

@@ -25,11 +25,12 @@ html
     .dashboard.unselectable
       .date Today
       ul.events
-        li.sleep Sleep(ing)
+        li.sleep
+          label Sleep(ing)
           .add +
-          .add_event(style='display:none; height:400px;')
+          .add_event(style='display:none; height:290px;')
           
-            div(style='text-align:center; margin-top:110px;')
+            div(style='text-align:center; margin-top:55px;')
               .clock
                 canvas.bg
                 canvas.fg
@@ -43,20 +44,18 @@ html
               label since
               em.t ###
               div
-                span(data-minutes="-60") -1hr
                 span(data-minutes="-5") -5min
                 span(data-minutes="+5") +5min
-                span(data-minutes="+60") +1hr
                 
             .end.field
               label until
               em.t ###
               div
-                span(data-minutes="-60") -1hr
                 span(data-minutes="-5") -5min
                 span(data-minutes="+5") +5min
-                span(data-minutes="+60") +1hr
-        li.cry Cry(ing)
+        li.cry
+          label Cry(ing)
           .add +
-        li.notes Notes
+        li.notes
+          label Notes
           .add +

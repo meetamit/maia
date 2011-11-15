@@ -5,6 +5,7 @@ address,caption,cite,code,dfn,th,var{font-style:normal;font-weight:normal}
 li{list-style:none}
 caption,th{text-align:left}
 h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}
+em{font-style:normal;}
 q:before,q:after{content:''}
 abbr,acronym{border:0;font-variant:normal}
 sup{vertical-align:text-top}
@@ -34,20 +35,25 @@ body {
 }
 
 .events li {
-  padding:14px 0px;
   border-bottom:1px dotted #999;
 }
+
+.events li > label {
+  padding:14px 0px;
+  display:inline-block;
+}
+
 
 .events li .add {
   float:right;
   font-weight:bold;
   font-size:40px;
   line-height:18px;
+  margin-top:14px;
   margin-right:5px;
 }
 
 .events .add_event {
-  margin-top:10px;
   border-top:1px dotted #aaa;
   position:relative;
 }
@@ -55,13 +61,13 @@ body {
 .events .add_event .field {
   position:absolute;
 }
-.events .add_event .start {
-  left:0;
-  top:0;
+.events .add_event .start.field {
+  left:5px;
+  top:5px;
 }
-.events .add_event .end {
-  right:0;
-  bottom:0;
+.events .add_event .end.field {
+  right:5px;
+  bottom:5px;
 }
 
 .events .add_event span {
@@ -81,19 +87,25 @@ body {
 }
 
 .events .add_event .t {
+  font-variant:small-caps;
   font-style:normal;
-  font-size:28px;
-  margin:0 16px 0 6px;
-  vertical-align:middle;
-  display:inline-block;
+  text-align:center;
+  font-size:14px;
+  display:block;
+  line-height:26px;
+}
+
+.events .add_event .t em {
+  font-size:24px;
 }
 
 
-.events li label {
+.events .field label {
   font-variant:small-caps;
-  font-size:22px;
+  font-size:18px;
   font-weight:bold;
   text-align:center;
-  height:20px;
-  display:inline-block;
+  line-height:15px;
+  display:block;
+/*  color:#888;*/
 }
