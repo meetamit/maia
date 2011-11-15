@@ -17,6 +17,23 @@
   position:absolute;
 }
 
+.clock .label {
+  opacity:0;
+  -webkit-transition: opacity .3s linear;
+  position:absolute;
+  background-color:#000;
+  color:#fff;
+  font-size:12px;
+  font-weight:bold;
+  padding:0px 4px;
+  white-space:nowrap;
+  font-variant:small-caps;
+}
+
+.clock.dragged .label {
+  opacity:1;
+}
+
 .clock .handle {
   content:'.';
   position:absolute;

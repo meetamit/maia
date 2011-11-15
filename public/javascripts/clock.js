@@ -19,10 +19,12 @@
         $fg = $container.find('canvas.fg'),
         $start = $container.find('.start.handle'),
         $end = $container.find('.end.handle'),
+        $label = $container.find('.label'),
         bgCanvas = $bg[0], fgCanvas = $fg[0],
         bg = bgCanvas.getContext("2d"),
         fg = fgCanvas.getContext("2d"),
         w, h, ctr, innerRadius, outerRadius;
+        
     function update() {
       if(!w * h) { return; }
       var startAngle = Clock.dateToRads(event.get("start")),
@@ -43,7 +45,7 @@
       });
 
       fg.clearRect(0,0,w,h);
-      fg.fillStyle = "rgba(187,187,187,.2)";
+      fg.fillStyle = "rgba(187,187,187,.3)";
       for(var i = Math.floor(span / maia.TWELVE_HOURS); i >= 1; i--) {
         fg.beginPath();
         fg.arc(ctr.x, ctr.y, innerRadius, 0, 2 * Math.PI, false);
@@ -55,6 +57,31 @@
         fg.arc(ctr.x, ctr.y, innerRadius, startAngle, endAngle, false);
         fg.arc(ctr.x, ctr.y, 10, endAngle, startAngle, true);
         fg.fill();
+      }
+
+      var isTransient = event.get('isTransient');
+      // if(event.hasChanged('isTransient')) {
+      //   if(isTransient) {
+      //     $label.fadeIn(100);
+      //   }
+      //   else {
+      //     $label.fadeOut();
+      //   }
+      // }
+      if(isTransient) {
+        var angle = dragged == END ? endAngle : startAngle;
+        angle = (angle + Math.PI/2).mod(2 * Math.PI);
+        var f = angle / 2,
+            pt = { x:(outerRadius+1) * Math.sin(angle) + ctr.x, y:(outerRadius+1) * Math.cos(angle) + ctr.y };
+        $label.css({
+          left:   pt.x,
+          bottom: pt.y + 45 * Math.pow( Math.sin(angle / 2), 2 ) + 10
+        }).text(dragged == END ? event.get('fEnd') : event.get('fStart'));
+        
+        // fg.fillStyle = "#00a";
+        // fg.beginPath();
+        // fg.arc(pt.x, h - pt.y, 3, 0, 2 * Math.PI, false);
+        // fg.fill();
       }
     }
 
@@ -98,6 +125,7 @@
         pg, dd, a0, a1,
         phaze, aLast;
     function dragStart(e) {
+      $container.addClass("dragged");
       e.preventDefault();
       if(e.target == $start[0]) {
         dragged = START;
@@ -112,6 +140,8 @@
       a0 = Clock.ptToRads({ x:pg.x - dd.left - ctr.x, y:pg.y - dd.top - ctr.y });
       aLast = a0;
       phaze = 0;
+      
+      dragMove(e);
       
       $(document).bind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
       $(document).bind($.browser.touchDevice ? 'touchend'  : 'mouseup', dragEnd);
@@ -147,6 +177,7 @@
     }
     
     function dragEnd(e) {
+      $container.removeClass("dragged");
       event.set({ isTransient: false });
       $(document).unbind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
       $(document).unbind($.browser.touchDevice ? 'touchend' : 'mouseup', dragEnd);

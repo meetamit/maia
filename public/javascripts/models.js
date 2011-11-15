@@ -41,10 +41,15 @@
     },
     
     format: function(date, hasSeconds) {
-      return (//(date.getMonth()+1) + '/' +date.getDate() + ' ' + 
-        date.getHours() + ':' + String(date.getMinutes() + 100).substr(1) + (
-        hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) : ''
-      ));
+      var hours = date.getHours(),
+          isPM = hours >= 12;
+      hours = hours == 12 ? 12 : hours % 12;
+      return [
+        // (date.getMonth()+1) + '/' + date.getDate() + ' ',
+        hours + ':' + String(date.getMinutes() + 100).substr(1),
+        hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) : '',
+        isPM ? 'pm' : 'am'
+      ].join('');
     },
     
     isEndImplied: function() {

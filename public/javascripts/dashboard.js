@@ -21,7 +21,7 @@
   
   function AddEvent(listEntry, $container) {
     var event = new maia.Event({
-          start: maia.Event.getNow(12000000),//new Date(2000,0,1,2,50),//maia.Event.getNow(1200000)
+          start: maia.Event.getNow(),//new Date(2000,0,1,2,50),//maia.Event.getNow(1200000)
           end: null//maia.Event.getNow()//null
         }),
         $start = $container.find('.start.field'),

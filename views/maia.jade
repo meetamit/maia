@@ -27,9 +27,9 @@ html
       ul.events
         li.sleep Sleep(ing)
           .add +
-          .add_event(style='display:none')
+          .add_event(style='display:none; height:400px;')
           
-            div(style='text-align:center; margin-top:70px;')
+            div(style='text-align:center; margin-top:110px;')
               .clock
                 canvas.bg
                 canvas.fg
@@ -37,6 +37,7 @@ html
                   .inner
                 .start.handle
                   .inner
+                .label 12:34
               
             .start.field
               label since
