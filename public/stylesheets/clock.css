@@ -19,7 +19,7 @@
 
 .clock .label {
   opacity:0;
-  -webkit-transition: opacity .3s linear;
+  -webkit-transition: opacity 1s ease-in;
   position:absolute;
   background-color:#000;
   color:#fff;
@@ -33,6 +33,7 @@
 
 .clock.dragged .label {
   opacity:1;
+  -webkit-transition: opacity .3s linear;
 }
 
 .clock .handle {

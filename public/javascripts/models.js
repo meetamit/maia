@@ -15,9 +15,27 @@
     },
     
     set: function(attributes, options) {
-      if(attributes[START]) {
-        attributes[FORMATTED_START] = this.format(attributes[START]);
+      // START pushes END
+      if(attributes[START] > (attributes[END] || this.get(END))) {
+        attributes[END] = new Date(attributes[START]);
       }
+      
+      // Can't exceed present
+      var diff = Date.now() - attributes[END];
+      if(diff < 100 ) {
+        if(diff < 0) {
+          attributes[IMPLIED_END] = Event.getNow();
+        }
+        else {
+          attributes[IMPLIED_END] = attributes[END];
+        }
+        
+        if(attributes[START] && attributes[START] > attributes[IMPLIED_END]) {
+          attributes[START] = attributes[IMPLIED_END];
+        }
+      }
+      
+      // Implied end or normal end
       if(attributes[IMPLIED_END]) {
         if(!this.isEndImplied()) {
           var _this = this;
@@ -25,18 +43,28 @@
         }
         attributes[END] = attributes[IMPLIED_END];
       }
-      else if(attributes[END] && this.isEndImplied()) {
-        clearInterval(this.get('impliedInterval'));
-        attributes[IMPLIED_END] = null;
+      else if(attributes[END]) {
+        if(this.isEndImplied()) {
+          clearInterval(this.get('impliedInterval'));
+          attributes[IMPLIED_END] = null;
+        }
+        
+        if(attributes[END] < this.get(START)) {
+          attributes[START] = attributes[END];
+        }
       }
 
+      // Formatting
+      if(attributes[START]) {
+        attributes[FORMATTED_START] = this.format(attributes[START]);
+      }
       if(attributes[END]) {
         attributes[FORMATTED_END] = this.format(attributes[END], this.isEndImplied() && attributes[IMPLIED_END] !== null);
-      }
-      
+      }      
       if(attributes[IMPLIED_END]) {
         attributes[FORMATTED_END] = this.format(attributes[IMPLIED_END], true);
       }
+      
       Backbone.Model.prototype.set.call(this, attributes, options);
     },
     
@@ -76,8 +104,7 @@
       }
       var future = Event.getIncremented(current, amount, snap);
       
-      if( field == START && future <= this.get(END) ) return true;
-      else if ( field == END && future >= this.get(START) && future <= Date.now() ) return true;
+      if ( future <= Date.now() ) return true;
       else return false;
     },
     

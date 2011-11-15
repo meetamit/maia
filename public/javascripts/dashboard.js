@@ -44,9 +44,7 @@
         $end.find('.t').html(event.get('fEnd').toString());
       }
       
-      if(!event.get('isTransient')) {
-        $.each(btns, function(i, btn) { btn.updateDisability(); });
-      }
+      $.each(btns, function(i, btn) { btn.updateDisability(); });
     };
     
     function newIncrBtn(element) {
@@ -56,11 +54,11 @@
       btn.field = $btn.parents().indexOf($start[0]) > -1 ? 'start' : 'end';
       btn.amount = parseInt($btn.data('minutes'), 10) * 60000;
       btn.updateDisability = function() {
-        if(event.canIncrement(this.field, this.amount)) { 
-          btn.enable();
+        if(this.amount > 0 && event.isEndImplied() && (this.field == 'end' || event.getSpan() < 60000)) {
+          btn.disable();
         }
         else {
-          btn.disable();
+          btn.enable();
         }
       };
 

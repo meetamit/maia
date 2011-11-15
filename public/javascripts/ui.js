@@ -21,7 +21,7 @@
         // intervalId = null,
         rate,
         rate0 = 300,
-        rate1 = 100;
+        rate1 = 50;
     $container.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', function(e) {
       if(_this.disabled) { return; }
       e.preventDefault();

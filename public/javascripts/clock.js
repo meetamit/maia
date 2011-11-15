@@ -45,7 +45,14 @@
       });
 
       fg.clearRect(0,0,w,h);
-      fg.fillStyle = "rgba(187,187,187,.3)";
+      
+      fg.beginPath();
+      fg.moveTo(10 * Math.cos(startAngle) + ctr.x, 10 * Math.sin(startAngle) + ctr.y);
+      fg.lineTo(innerRadius * Math.cos(startAngle) + ctr.x, innerRadius * Math.sin(startAngle) + ctr.y);
+      fg.strokeStyle = '#00a';
+      fg.stroke();
+      
+      fg.fillStyle = "rgba(0,0,170,.3)";//'#00a';//"rgba(187,187,187,.3)";
       for(var i = Math.floor(span / maia.TWELVE_HOURS); i >= 1; i--) {
         fg.beginPath();
         fg.arc(ctr.x, ctr.y, innerRadius, 0, 2 * Math.PI, false);
@@ -58,6 +65,13 @@
         fg.arc(ctr.x, ctr.y, 10, endAngle, startAngle, true);
         fg.fill();
       }
+      
+      fg.beginPath();
+      fg.moveTo(10 * Math.cos(endAngle) + ctr.x, 10 * Math.sin(endAngle) + ctr.y);
+      fg.lineTo(innerRadius * Math.cos(endAngle) + ctr.x, innerRadius * Math.sin(endAngle) + ctr.y);
+      fg.strokeStyle = '#00a';
+      fg.stroke();
+
 
       if(event.get('isTransient')) {
         var angle = dragged == END ? endAngle : startAngle;
@@ -66,9 +80,7 @@
             pt = { x:(outerRadius+1) * Math.sin(angle) + ctr.x, y:(outerRadius+1) * Math.cos(angle) + ctr.y };
         $label.css({
           right:   -pt.x + h,
-          // bottom: pt.y + 45 * Math.pow( Math.sin(angle / 2), 2 ) + 10 + 45 * Math.max(0, Math.sin(angle))
           bottom: pt.y + 40 * Math.pow( Math.sin(angle / 2), 2 ) + 10 + 30 * Math.max(0, Math.sin(angle))
-          // bottom: pt.y + 10 + 45 * Math.max(0, Math.sin(angle))
         }).html(dragged == END ? event.get('fEnd') : event.get('fStart'));
       }
     }
@@ -129,7 +141,7 @@
       aLast = a0;
       phaze = 0;
       
-      dragMove(e);
+      event.set({ isTransient:true });
       
       $(document).bind($.browser.touchDevice ? 'touchmove' : 'mousemove', dragMove);
       $(document).bind($.browser.touchDevice ? 'touchend'  : 'mouseup', dragEnd);
@@ -145,22 +157,8 @@
         Number(date0) + Clock.radsToMs(a1 - a0) + maia.TWELVE_HOURS * phaze
       ) / maia.FIVE_MINUTES) * maia.FIVE_MINUTES;// Round to 5 minutes
       
-      date1ms = Math.min(date1ms, Date.now());
-      
       var setter = {};
-      setter.isTransient = true;
       setter[dragged] = new Date(date1ms);
-      
-      if(dragged == START && date1ms > event.get(END) && !event.isEndImplied()) {
-        setter[END] = new Date(date1ms);
-      }
-      if(dragged == END   && date1ms < event.get(START)) {
-        setter[START] = new Date(date1ms);
-      }
-      if((dragged == END || !event.isEndImplied()) && date1ms == Date.now()) {
-        setter['impliedEnd'] = setter[END];
-      }
-
       event.set(setter);
     }
     
