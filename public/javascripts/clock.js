@@ -65,8 +65,10 @@
         var f = angle / 2,
             pt = { x:(outerRadius+1) * Math.sin(angle) + ctr.x, y:(outerRadius+1) * Math.cos(angle) + ctr.y };
         $label.css({
-          left:   pt.x,
-          bottom: pt.y + 45 * Math.pow( Math.sin(angle / 2), 2 ) + 10
+          right:   -pt.x + h,
+          // bottom: pt.y + 45 * Math.pow( Math.sin(angle / 2), 2 ) + 10 + 45 * Math.max(0, Math.sin(angle))
+          bottom: pt.y + 40 * Math.pow( Math.sin(angle / 2), 2 ) + 10 + 30 * Math.max(0, Math.sin(angle))
+          // bottom: pt.y + 10 + 45 * Math.max(0, Math.sin(angle))
         }).html(dragged == END ? event.get('fEnd') : event.get('fStart'));
       }
     }
