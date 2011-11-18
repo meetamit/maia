@@ -39,7 +39,7 @@
       if(attributes[IMPLIED_END]) {
         if(!this.isEndImplied()) {
           var _this = this;
-          // attributes.impliedInterval = setInterval(function() { _this.updateImpliedEnd(); }, 1000);
+          attributes.impliedInterval = setInterval(function() { _this.updateImpliedEnd(); }, 1000);
         }
         attributes[END] = attributes[IMPLIED_END];
       }
