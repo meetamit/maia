@@ -25,6 +25,13 @@
         fg = fgCanvas.getContext("2d"),
         w, h, ctr, innerRadius, outerRadius;
         
+    this.setEvent = function(_event) {
+      event && event.unbind('change', update);
+      event = _event;
+      event.bind('change', update);
+      update();
+    };
+    
     function update() {
       if(!w * h) { return; }
       var startAngle = Clock.dateToRads(event.get("start")),
@@ -107,14 +114,15 @@
           bg.strokeStyle = "#aaa";
           bg.stroke();
         }
-        
-        update();
       }
+    };
+    
+    this.copyInto = function(bgContext, fgContext) {
+      bgContext.putImageData(fg.getImageData(0, 0, w, h), 0, 0);
+      fgContext.putImageData(bg.getImageData(0, 0, w, h), 0, 0);
     };
 
     this.updateSize();
-    event.bind('change', update);
-    
     $start.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
     $end.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
 

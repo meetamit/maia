@@ -16,9 +16,9 @@ legend{color:#000}
 object{outline:0 none;display:block}
 
 body {
-/*  margin:20px;*/
   padding:0;
   font:16px/1.5 Helvetica,Arial,"Lucida Grande","Lucida Sans",Tahoma,Verdana,sans-serif;
+  height:480px;/* TEMP */
 }
 
 .unselectable {
@@ -54,8 +54,16 @@ body {
 }
 
 .events .add_event {
-  border-top:1px dotted #aaa;
+/*  border-top:1px dotted #aaa;*/
   position:relative;
+  margin-top:0;
+  height:260px;
+}
+.events .add_event.closed {
+  margin-top:-260px;
+}
+.events .add_event.open {
+  -webkit-transition:all .6s ease-in-out;
 }
 
 .events .add_event .field {

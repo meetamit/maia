@@ -19,7 +19,7 @@ html
     script(type='text/javascript')
       $(document).ready(function() {
         new maia.Dashboard( $('.dashboard') );
-        $('.sleep .add').trigger('click');
+        // $('.sleep .add').trigger('click');
       });
   body
     .dashboard.unselectable
@@ -28,31 +28,32 @@ html
         li.sleep
           label Sleep(ing)
           .add +
-          .add_event(style='display:none; height:260px;')
+          .space(style='max-height:260px; overflow:hidden; position:relative;')
+            .add_event.closed
           
-            div(style='text-align:right; padding-right:20px; margin-top:35px;')
-              .clock
-                canvas.bg
-                canvas.fg
-                .end.handle
-                  .inner
-                .start.handle
-                  .inner
-                .label 12:34
+              div(style='text-align:right; padding-right:20px; padding-top:35px;')
+                .clock
+                  canvas.bg
+                  canvas.fg
+                  .end.handle
+                    .inner
+                  .start.handle
+                    .inner
+                  .label 12:34
               
-            .start.field
-              label since
-              em.t ###
-              div
-                span(data-minutes="-5") -5min
-                span(data-minutes="+5") +5min
+              .start.field
+                label since
+                em.t ###
+                div
+                  span(data-minutes="-5") -5min
+                  span(data-minutes="+5") +5min
                 
-            .end.field
-              label until
-              em.t ###
-              div
-                span(data-minutes="-5") -5min
-                span(data-minutes="+5") +5min
+              .end.field
+                label until
+                em.t ###
+                div
+                  span(data-minutes="-5") -5min
+                  span(data-minutes="+5") +5min
         li.cry
           label Cry(ing)
           .add +
