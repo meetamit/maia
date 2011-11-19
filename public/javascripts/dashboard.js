@@ -12,14 +12,39 @@
   
   function ListEntry($container) {
     var $add = $container.find('.add'),
+        $minz = $container.find('.minz'),
         $space = $container.find('.space'),
-        addEvent = null;
+        addEvent = null,
+        event = null,
+        actionState = 0;// 0 = plus button; 1 = minimize arrow
     
     $add.bind('click', function() {
-      $space.removeClass("closed").addClass("open");
+      if(event) {
+        event.unbind('change', update);
+      }
+      $space.removeClass('closed').addClass('open');
       addEvent = addEvent || new AddEvent($container.find('.add_event'));
-      addEvent.startNew();
+      event = addEvent.startNew();
+      event.bind('change', update);
+      update();
     });
+    
+    $minz.bind('click', function() {
+      $space.removeClass('open').addClass('closed');
+    });
+    
+    function update() {
+      if(actionState != 1 && event.isEndImplied()) {
+        actionState = 1;
+        $add.addClass('supressed');
+        $minz.removeClass("supressed");
+      }
+      else if(actionState != 0 && !event.isEndImplied()) {
+        actionState = 0;
+        $minz.addClass("supressed");
+        $add.removeClass('supressed');
+      }
+    }
   }
   
   function AddEvent($container) {

@@ -27,7 +27,9 @@ html
       ul.events
         li.sleep
           label Sleep(ing)
-          .add +
+          .action.add +
+          .action.minz.supressed ^
+          .action.ok.supressed ✓
           .space.closed(style='max-height:260px; overflow:hidden; position:relative;')
             .add_event.closed
           
@@ -56,7 +58,7 @@ html
                   span(data-minutes="+5") +5min
         li.cry
           label Cry(ing)
-          .add +
+          .action.add +
         li.notes
           label Notes
-          .add +
+          .action.add +
