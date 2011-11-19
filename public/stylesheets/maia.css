@@ -67,6 +67,7 @@ body {
   height:260px;
   -webkit-transition:all .6s ease-in-out;
 }
+
 .events .add_event.closed {
   opacity:-.5;
 }
@@ -74,6 +75,11 @@ body {
   -webkit-transition:all 1s ease-in-out;
   opacity:1;
 }
+
+.events .add_event.incoming {
+  margin-top:-260px;
+}
+
 
 .events .add_event .field {
   position:absolute;

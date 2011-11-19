@@ -33,20 +33,17 @@
       if(event) {
         event.unbind('change', update);
         var $n = $($container[0].cloneNode()).html($container.html());
-        $container.before($n);
+        $container.after($n);
         
         clock.copyInto(
           $n.find('canvas.bg')[0].getContext('2d'),
           $n.find('canvas.fg')[0].getContext('2d')
         );
         
-        $n.css({
-          marginTop:-$n.height(),
-          '-webkit-transition':'margin .5s ease-in-out'
-        });
-        $container.css({
-          
-        });
+        $container.removeClass("open").addClass("incoming");
+        setTimeout(function() { console.log("ye"); 
+          $container.removeClass("incoming").addClass("open"); 
+        }, 0);
       }
       else {
         $container.css({display:'block'});
