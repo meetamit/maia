@@ -11,39 +11,133 @@
   }
   
   function ListEntry($container) {
-    var $add = $container.find('.add'),
+    var $ok = $container.find('.ok'),
+        $add = $container.find('.add'),
         $minz = $container.find('.minz'),
         $space = $container.find('.space'),
+        $ing = $container.find('.ing'),
+        $d = $container.find('.d'),
         addEvent = null,
+        ongoing = null,
         event = null,
-        actionState = 0;// 0 = plus button; 1 = minimize arrow
-    
-    $add.bind('click', function() {
-      if(event) {
-        event.unbind('change', update);
-      }
-      $space.removeClass('closed').addClass('open');
-      addEvent = addEvent || new AddEvent($container.find('.add_event'));
-      event = addEvent.startNew();
-      event.bind('change', update);
-      update();
+        state = null,
+        
+        any = {
+          update: function (model) {
+            if(model == ongoing) {
+            }
+          }
+        },
+        idle = {
+          enter: function () {
+            $space.addClass('closed');
+            $add.removeClass('supressed');
+            $ing.addClass('supressed');
+          },
+          action: function() {
+            addEvent = addEvent || new AddEvent($container.find('.add_event'));
+            event = addEvent.startNew();
+            event.bind('change', xxx=function(model) {
+              state.update(model);
+            });
+            setState(edit_ongoing);
+          },
+          exit: function () {
+            $space.removeClass('closed');
+            $add.addClass('supressed');
+            $ing.removeClass('supressed');
+          }
+        },
+        idle_ongoing = $.extend({}, idle, {
+          enter: function() {
+            $space.addClass('closed');
+            $add.removeClass('supressed');
+            $ing.removeClass('supressed');
+            $d.removeClass('supressed');
+            $d.bind('click', function() {
+              if(event) {
+                event.unbind('change', xxx);
+              }
+              event = addEvent.startNew(ongoing);
+              ongoing = null;
+              setState(edit_ongoing);
+            });
+          },
+          update: function(model) {
+            if(model == ongoing) {
+              $d.text( maia.Event.formatSpan(ongoing.getSpan()) );
+            }
+          },
+          exit: function() {
+            $space.removeClass('closed');
+            $add.addClass('supressed');
+            $ing.addClass('supressed');
+            $d.addClass('supressed');
+          }
+        }),
+        edit_ongoing = {
+          enter: function () {
+            $space.addClass('open');
+            $ing.removeClass('supressed');
+            if(ongoing) {
+              $minz.addClass('supressed');
+            }
+            else {
+              $minz.removeClass('supressed');
+            }
+          },
+          action: function() {
+            ongoing = event;
+            event = null;
+            setState(idle_ongoing);
+          },
+          update: function () {
+            if(!event.isEndImplied() && state != edit_ok) {
+              setState(edit_ok);
+            }
+          },
+          exit: function () {
+            $space.removeClass('open');
+            if(!ongoing) {
+              $ing.addClass('supressed');
+            }
+            $minz.addClass('supressed');
+          }
+        },
+        edit_ok = {
+          enter: function () {
+            $space.addClass('open');
+            $ok.removeClass('supressed');
+          },
+          action: function() {
+            if(ongoing) {
+              setState(idle_ongoing);
+            }
+            else {
+              setState(idle);
+            }
+          },
+          update: function () {
+            if(event.isEndImplied() && state != edit_ongoing) {
+              setState(edit_ongoing);
+            }
+          },
+          exit: function () {
+            $space.removeClass('open');
+            $ok.addClass('supressed');
+          }
+        };
+        
+    setState(idle);
+        
+    $container.find('.action').bind('click', function() {
+      state.action();
     });
     
-    $minz.bind('click', function() {
-      $space.removeClass('open').addClass('closed');
-    });
-    
-    function update() {
-      if(actionState != 1 && event.isEndImplied()) {
-        actionState = 1;
-        $add.addClass('supressed');
-        $minz.removeClass("supressed");
-      }
-      else if(actionState != 0 && !event.isEndImplied()) {
-        actionState = 0;
-        $minz.addClass("supressed");
-        $add.removeClass('supressed');
-      }
+    function setState(s) {
+      state && state.exit();
+      state = s;
+      state.enter();
     }
   }
   
@@ -66,7 +160,7 @@
         );
         
         $container.removeClass("open").addClass("incoming");
-        setTimeout(function() { console.log("ye"); 
+        setTimeout(function() {
           $container.removeClass("incoming").addClass("open"); 
         }, 0);
       }

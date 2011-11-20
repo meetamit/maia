@@ -44,6 +44,36 @@ body {
   display:inline-block;
 }
 
+@-webkit-keyframes pulsate {
+ 0% {
+   opacity: 0;
+ }
+ 35% {
+   opacity: 1;
+ }
+ 100% {
+   opacity: 0;
+ }
+}
+.events li > label .ing {
+/*  color:#c00;*/
+  font-weight:bold;
+  -webkit-animation-name: pulsate;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count:infinite;
+}
+.events li > label .ing.supressed {
+  opacity:0;
+  -webkit-animation-name: none;
+}
+
+.events li > label .d {
+  padding-left:6px;
+  opacity:1;
+}
+.events li > label .d.supressed {
+  opacity:0;
+}
 
 .events li .action {
   position:absolute;
@@ -62,6 +92,13 @@ body {
 .events li .minz.action {
   padding-top:10px;
 }
+
+.events li .ok.action {
+  padding-top:6px;
+  padding-right:2px;
+  font-size:30px;
+}
+
 
 .events li .action.supressed {
   opacity:0;
@@ -107,7 +144,7 @@ body {
 }
 .events .add_event .end.field {
   left:5px;
-  bottom:5px;
+  bottom:88px;
 }
 
 .events .add_event span {

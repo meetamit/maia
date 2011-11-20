@@ -131,6 +131,22 @@
       var t = new Date(Date.now() - (minus || 0));
       t.setMilliseconds(0);
       return t;
+    },
+    
+    formatSpan: function(span) {
+      var seconds = Math.round(span / 1000),
+          modSeconds = seconds % 60,
+          strSeconds = String(modSeconds + 100).substr(1),
+          minutes = Math.floor(seconds / 60),
+          modMinutes = minutes % 60,
+          strMinutes = String(modMinutes + 100).substr(1),
+          hours = Math.floor(modMinutes / 60);
+      
+      return [
+        hours,
+        String(modMinutes + 100).substr(1),
+        String(modSeconds + 100).substr(1)
+      ].join(':');
     }
   });
   
