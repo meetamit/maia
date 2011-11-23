@@ -30,7 +30,6 @@ body {
 
 .dashboard .date {
   font-size:32px;
-  border-bottom:1px solid #999;
   padding:8px 0 0 12px;
 }
 
@@ -46,17 +45,17 @@ body {
 
 @-webkit-keyframes pulsate {
  0% {
-   opacity: 0;
+   opacity: 0.5;
  }
  35% {
    opacity: 1;
  }
  100% {
-   opacity: 0;
+   opacity: 0.5;
  }
 }
 .events li > label .ing {
-/*  color:#c00;*/
+  color:#00a;
   font-weight:bold;
   -webkit-animation-name: pulsate;
   -webkit-animation-duration: 2s;

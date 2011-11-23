@@ -5,6 +5,7 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
     link(rel='stylesheet', href='/stylesheets/maia.css')
     link(rel='stylesheet', href='/stylesheets/clock.css')
+    link(rel='stylesheet', href='/stylesheets/strip.css')
     script(type='text/javascript', src='/javascripts/lib/zepto.min.js')
     script(type='text/javascript', src='/javascripts/lib/zepto_fx.js')
     script(type='text/javascript', src='/javascripts/lib/underscore-min.js')
@@ -14,6 +15,7 @@ html
     script(type='text/javascript', src='/javascripts/utils.js')
     script(type='text/javascript', src='/javascripts/ui.js')
     script(type='text/javascript', src='/javascripts/clock.js')
+    script(type='text/javascript', src='/javascripts/strip.js')
     script(type='text/javascript', src='/javascripts/models.js')
     script(type='text/javascript', src='/javascripts/dashboard.js')
     script(type='text/javascript')
@@ -25,6 +27,7 @@ html
     .dashboard.unselectable
       .date Today
       ul.events
+        div.strip
         li.sleep
           label Sleep
             span.ing.supressed ing
@@ -46,7 +49,7 @@ html
                   .label 12:34
               
               .start.field
-                label since
+                label from
                 em.t ###
                 div
                   span(data-minutes="-5") -5min

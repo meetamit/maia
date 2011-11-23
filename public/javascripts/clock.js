@@ -92,7 +92,7 @@
       }
     }
 
-    this.updateSize = function () {
+    function updateSize() {
       w = $fg.width();
       h = $fg.height();
       ctr = { x:w*.5, y:h*.5 };
@@ -122,7 +122,7 @@
       fgContext.putImageData(bg.getImageData(0, 0, w, h), 0, 0);
     };
 
-    this.updateSize();
+    updateSize();
     $start.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
     $end.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
 

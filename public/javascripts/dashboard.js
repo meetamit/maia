@@ -5,12 +5,14 @@
   }
   
   function List($container) {
-    var sleep = new ListEntry( $container.find('.sleep') ),
+    var events = new Backbone.Collection(),
+        strip = new maia.Strip( $container.find('.strip'), events ),
+        sleep = new ListEntry( $container.find('.sleep'), events),
         cry = new ListEntry( $container.find('.cry') ),
         notes = new ListEntry( $container.find('.notes') );
   }
   
-  function ListEntry($container) {
+  function ListEntry($container, events) {
     var $ok = $container.find('.ok'),
         $add = $container.find('.add'),
         $minz = $container.find('.minz'),
@@ -22,12 +24,6 @@
         event = null,
         state = null,
         
-        any = {
-          update: function (model) {
-            if(model == ongoing) {
-            }
-          }
-        },
         idle = {
           enter: function () {
             $space.addClass('closed');
@@ -36,8 +32,13 @@
           },
           action: function() {
             addEvent = addEvent || new AddEvent($container.find('.add_event'));
-            event = addEvent.startNew();
-            event.bind('change', xxx=function(model) {
+            event = addEvent.startNew(new maia.Event({
+              start: maia.Event.getNow(),//new Date(2000,0,1,2,50),//maia.Event.getNow(1200000)
+              end: null,//maia.Event.getNow()//null
+              isCurrent: true
+            }));
+            events.add(event);
+            event.bind('change', function(model) {
               state.update(model);
             });
             setState(edit_ongoing);
@@ -56,8 +57,9 @@
             $d.removeClass('supressed');
             $d.bind('click', function() {
               if(event) {
-                event.unbind('change', xxx);
+                event.unbind('change');
               }
+              console.log("here",ongoing);
               event = addEvent.startNew(ongoing);
               ongoing = null;
               setState(edit_ongoing);
@@ -110,6 +112,7 @@
             $ok.removeClass('supressed');
           },
           action: function() {
+            event.set({ isCurrent: false });
             if(ongoing) {
               setState(idle_ongoing);
             }
@@ -165,15 +168,10 @@
         }, 0);
       }
       else {
-        $container.css({display:'block'});
-        clock.updateSize();
         $container.removeClass("closed").addClass("open");
       }
       
-      event = _event || new maia.Event({
-        start: maia.Event.getNow(),//new Date(2000,0,1,2,50),//maia.Event.getNow(1200000)
-        end: null//maia.Event.getNow()//null
-      });
+      event = _event;
       event.bind('change', update);
       update(null);
       clock.setEvent(event);
