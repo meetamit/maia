@@ -55,20 +55,19 @@
             $add.removeClass('supressed');
             $ing.removeClass('supressed');
             $d.removeClass('supressed');
-            $d.bind('click', function() {
-              if(event) {
-                event.unbind('change');
-              }
-              console.log("here",ongoing);
-              event = addEvent.startNew(ongoing);
-              ongoing = null;
-              setState(edit_ongoing);
-            });
           },
           update: function(model) {
             if(model == ongoing) {
               $d.text( maia.Event.formatSpan(ongoing.getSpan()) );
             }
+          },
+          resume: function(model) {
+            if(event) {
+              event.unbind('change');
+            }
+            event = addEvent.startNew(ongoing, true);
+            ongoing = null;
+            setState(edit_ongoing);
           },
           exit: function() {
             $space.removeClass('closed');
@@ -137,6 +136,11 @@
       state.action();
     });
     
+    $d.bind('click', function() {
+      state.resume(ongoing);
+    });
+    
+    
     function setState(s) {
       state && state.exit();
       state = s;
@@ -151,21 +155,27 @@
         clock = new maia.Clock($container.find('.clock')),
         btns = $.map($container.find('[data-minutes]'), newIncrBtn);
         
-    this.startNew = function(_event) {
+    this.startNew = function(_event, skipTransition) {
       if(event) {
         event.unbind('change', update);
-        var $n = $($container[0].cloneNode()).html($container.html());
-        $container.after($n);
         
-        clock.copyInto(
-          $n.find('canvas.bg')[0].getContext('2d'),
-          $n.find('canvas.fg')[0].getContext('2d')
-        );
+        if(!skipTransition) {
+          var $n = $($container[0].cloneNode()).html($container.html());
+          $container.after($n);
         
-        $container.removeClass("open").addClass("incoming");
-        setTimeout(function() {
-          $container.removeClass("incoming").addClass("open"); 
-        }, 0);
+          clock.copyInto(
+            $n.find('canvas.bg')[0].getContext('2d'),
+            $n.find('canvas.fg')[0].getContext('2d')
+          );
+        
+          $container.removeClass("open").addClass("incoming");
+          setTimeout(function() {
+            $container.removeClass("incoming").addClass("open"); 
+          }, 0);
+          setTimeout(function() {
+            $n.remove(); 
+          }, 2000);
+        }
       }
       else {
         $container.removeClass("closed").addClass("open");

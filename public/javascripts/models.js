@@ -140,8 +140,7 @@
           minutes = Math.floor(seconds / 60),
           modMinutes = minutes % 60,
           strMinutes = String(modMinutes + 100).substr(1),
-          hours = Math.floor(modMinutes / 60);
-      
+          hours = Math.floor(minutes / 60);
       return [
         hours,
         String(modMinutes + 100).substr(1),
