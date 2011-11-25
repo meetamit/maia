@@ -10,6 +10,10 @@
         sleep = new ListEntry( $container.find('.sleep'), events),
         cry = new ListEntry( $container.find('.cry') ),
         notes = new ListEntry( $container.find('.notes') );
+        
+    strip.bind('selected', function(event) {
+      sleep.resume(event);// TEMP DEBUG
+    });
   }
   
   function ListEntry($container, events) {
@@ -43,6 +47,12 @@
             });
             setState(edit_ongoing);
           },
+          resume: function(model) {
+            model.set({ isCurrent:true });
+            event = addEvent.startNew(model, event.isEndImplied());
+            setState(edit_ok);
+          },
+          update: function() {},
           exit: function () {
             $space.removeClass('closed');
             $add.addClass('supressed');
@@ -88,6 +98,7 @@
             }
           },
           action: function() {
+            event.set({ isCurrent: false });
             ongoing = event;
             event = null;
             setState(idle_ongoing);
@@ -140,6 +151,9 @@
       state.resume(ongoing);
     });
     
+    this.resume = function(newEvent) {
+      state.resume(newEvent);
+    };
     
     function setState(s) {
       state && state.exit();

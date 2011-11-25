@@ -1,8 +1,10 @@
 (function() {
   maia.Strip = Strip;
   function Strip($container, events) {
+    _.extend(this, Backbone.Events);
     var l, ms0, mspp,
-        $legend = $('<div class="legend"></div>').appendTo($container);
+        $legend = $('<div class="legend"></div>').appendTo($container),
+        _this = this;
         
     events.bind('add', addEvent);
     events.bind('change', update);
@@ -13,7 +15,7 @@
       $legend.empty();
       l = $container.width();
       ms0 = Math.floor((Date.now() - maia.TIME_ZONE_OFFSET) / maia.TWENTY_FOUR_HOURS) * maia.TWENTY_FOUR_HOURS + maia.TIME_ZONE_OFFSET;
-      ms0 -= maia.TWELVE_HOURS;// TEMP DEBUG
+      // ms0 -= maia.TWELVE_HOURS;// TEMP DEBUG
       mspp = maia.TWENTY_FOUR_HOURS / l;
       drawLegend();
       update();
@@ -26,7 +28,7 @@
         });
         return;
       }
-      if(justDoIt || event.hasChanged('start') || event.hasChanged('end')) {
+      if(justDoIt === true || event.hasChanged('start') || event.hasChanged('end')) {
         var x0 = (event.get('start') - ms0) / mspp,
             x1 = (event.get('end') - ms0) / mspp;
         event.$seg.css({
@@ -34,7 +36,7 @@
           right: l - x1
         });
       }
-      if(justDoIt || event.hasChanged('isCurrent')) {
+      if(justDoIt === true || event.hasChanged('isCurrent')) {
         if(event.get('isCurrent'))
           event.$seg.addClass('current');
         else
@@ -45,6 +47,12 @@
     function addEvent(event) {
       event.$seg = $('<div class="seg">&nbsp;</div>').appendTo($container);
       update(event, true);
+      
+      event.$seg.bind('click', function() {
+        if(!event.get("isCurrent")) {
+          _this.trigger('selected', event);
+        }
+      });
     }
     
     function drawLegend() {

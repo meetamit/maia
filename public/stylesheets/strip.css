@@ -37,7 +37,7 @@
 
 @-webkit-keyframes glow {
  0% {
-   opacity: .85;
+   opacity: .35;
  }
  50% {
    opacity: 1;

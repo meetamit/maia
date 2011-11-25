@@ -3,3 +3,4 @@ When the pre-assigned time is round (ie :40 or :45), but behind the scenes the s
 
 ## Design
 Hobo Std is pretty neat
+Yeah, orientation should go between clock and timeline (with +/- just on timeline probably)
