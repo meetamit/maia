@@ -7,6 +7,7 @@
         _this = this;
         
     events.bind('add', addEvent);
+    events.bind('remove', removeEvent);
     events.bind('change', update);
     $(window).bind('resize', updateLength);
     updateLength();
@@ -53,6 +54,10 @@
           _this.trigger('selected', event);
         }
       });
+    }
+    
+    function removeEvent(event) {
+      event.$seg.remove();
     }
     
     function drawLegend() {

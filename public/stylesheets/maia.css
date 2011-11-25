@@ -98,6 +98,12 @@ body {
   font-size:30px;
 }
 
+.events li .x.action {
+  right:46px;
+  font-weight:normal;
+  padding-top:3px;
+  font-size:36px;
+}
 
 .events li .action.supressed {
   opacity:0;

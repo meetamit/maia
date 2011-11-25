@@ -20,6 +20,7 @@
     var $ok = $container.find('.ok'),
         $add = $container.find('.add'),
         $minz = $container.find('.minz'),
+        $x = $container.find('.x'),
         $space = $container.find('.space'),
         $ing = $container.find('.ing'),
         $d = $container.find('.d'),
@@ -32,6 +33,7 @@
           enter: function () {
             $space.addClass('closed');
             $add.removeClass('supressed');
+            $x.addClass('supressed');
             $ing.addClass('supressed');
           },
           action: function() {
@@ -51,6 +53,7 @@
           exit: function () {
             $space.removeClass('closed');
             $add.addClass('supressed');
+            $x.removeClass('supressed');
             $ing.removeClass('supressed');
           }
         },
@@ -58,6 +61,7 @@
           enter: function() {
             $space.addClass('closed');
             $add.removeClass('supressed');
+            $x.addClass('supressed');
             $ing.removeClass('supressed');
             $d.removeClass('supressed');
           },
@@ -69,6 +73,7 @@
           exit: function() {
             $space.removeClass('closed');
             $add.addClass('supressed');
+            $x.removeClass('supressed');
             $ing.addClass('supressed');
             $d.addClass('supressed');
           }
@@ -133,7 +138,15 @@
     setState(idle);
         
     $container.find('.action').bind('click', function() {
-      state.action();
+      if(this == $x[0]) {
+        event.unbind('change');
+        events.remove(event);
+        event.destroy();
+        event = null;
+        setState(ongoing ? idle_ongoing : idle);
+      }
+      else
+        state.action();
     });
     
     $d.bind('click', function() {

@@ -6,9 +6,7 @@
     initialize: function(hash) {
       if(!this.get(END)) {
         var _this = this,
-            implied = {
-              // impliedInterval: setInterval(function() { _this.updateImpliedEnd(); }, 1000)
-            };
+            implied = {};
         implied[IMPLIED_END] = Event.getNow();
         this.set(implied);
       }
@@ -112,6 +110,12 @@
       var implied = {};
       implied[IMPLIED_END] = Event.getNow();
       this.set(implied);
+    },
+    
+    destroy: function() {
+      if(this.isEndImplied()) {
+        clearInterval(this.get('impliedInterval'));
+      }
     },
 
     getSpan: function() { return (this.get(END) || this.get(IMPLIED_END)) - this.get(START); }
