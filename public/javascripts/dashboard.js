@@ -47,11 +47,6 @@
             });
             setState(edit_ongoing);
           },
-          resume: function(model) {
-            model.set({ isCurrent:true });
-            event = addEvent.startNew(model, event.isEndImplied());
-            setState(edit_ok);
-          },
           update: function() {},
           exit: function () {
             $space.removeClass('closed');
@@ -70,14 +65,6 @@
             if(model == ongoing) {
               $d.text( maia.Event.formatSpan(ongoing.getSpan()) );
             }
-          },
-          resume: function(model) {
-            if(event) {
-              event.unbind('change');
-            }
-            event = addEvent.startNew(ongoing, true);
-            ongoing = null;
-            setState(edit_ongoing);
           },
           exit: function() {
             $space.removeClass('closed');
@@ -139,7 +126,9 @@
             $space.removeClass('open');
             $ok.addClass('supressed');
           }
-        };
+        },
+        
+        _this = this;
         
     setState(idle);
         
@@ -148,11 +137,29 @@
     });
     
     $d.bind('click', function() {
-      state.resume(ongoing);
+      _this.resume(ongoing);
     });
     
-    this.resume = function(newEvent) {
-      state.resume(newEvent);
+    this.resume = function(model) {
+      if(event) {
+        if(event.isEndImplied()) {
+          ongoing = event;
+        }
+        else {
+          event.unbind('change');
+        }
+        event.set({ isCurrent:false });
+      }
+      model.set({ isCurrent:true });
+      event = addEvent.startNew(model, true);
+      if(model == ongoing) {
+        ongoing = null;
+        setState(edit_ongoing);
+      }
+      else {
+        setState(edit_ok);
+      }
+
     };
     
     function setState(s) {

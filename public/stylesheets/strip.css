@@ -6,7 +6,7 @@
 }
 
 .strip .seg {
-  height:10px;
+  height:12px;
   background-color:rgba(0,0,170,.3);/*rgba(0,0,0,.6);*/
   top:0;
   position:absolute;
@@ -20,12 +20,13 @@
 
 .strip .legend {
   position: absolute;
-  top: 7px;
+  top: 9px;
   border-top: 1px solid #000;
   left: 0;
   right: 0;
   z-index:1;
   opacity:.5;
+  pointer-events: none;
 }
 
 .strip .legend .tick {
