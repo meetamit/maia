@@ -17,6 +17,16 @@
   position:absolute;
 }
 
+.clock .digits > div {
+  position:absolute;
+  text-align:center;
+  color:#ddd;
+  font-weight:bold;
+  font-size:20px;
+  font-family: garamond;
+  letter-spacing:-2px;
+}
+
 .clock .label {
   opacity:0;
   -webkit-transition: opacity 1s ease-in;
