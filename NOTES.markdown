@@ -15,3 +15,6 @@ MongoDB 1.8+ includes a feature for Write Ahead Logging (Journaling), which has 
 To disable journaling, use --nojournal.
 
 * * * *
+
+## Testing
+Url param "stub_now=1321038671000" will stub to 11:11:11

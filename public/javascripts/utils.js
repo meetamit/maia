@@ -18,3 +18,11 @@
   maia.BROWSER_PREFIX = $.browser.webkit ? '-webkit-' : $.browser.firefox ? '-moz-' : '';
   maia.TRANSFORM_PROP = maia.BROWSER_PREFIX + 'transform';
 })();
+
+var matches = String(window.location).match(/stub_now=([0-9]*)/i);
+if(matches) {
+  var now0 = matches[1] || 1321038671000, 
+      nativeNow = Date.now, 
+      shift = now0 - nativeNow();
+  Date.now = function() { return nativeNow() + shift; };
+}
