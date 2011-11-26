@@ -194,7 +194,7 @@
         event.unbind('change', update);
         
         if(!skipTransition) {
-          var $n = $($container[0].cloneNode()).html($container.html());
+          var $n = $($container[0].cloneNode(true)).html($container.html());
           $container.after($n);
         
           clock.copyInto(

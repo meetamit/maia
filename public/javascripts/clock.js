@@ -23,7 +23,8 @@
         bgCanvas = $bg[0], fgCanvas = $fg[0],
         bg = bgCanvas.getContext("2d"),
         fg = fgCanvas.getContext("2d"),
-        w, h, ctr, innerRadius, outerRadius, digitRadius;
+        w, h, ctr, innerRadius, outerRadius, digitRadius,
+        transform = {}, transformProp = maia.TRANSFORM_PROP;
         
     this.setEvent = function(_event) {
       event && event.unbind('change', update);
@@ -38,18 +39,17 @@
           endAngle = Clock.dateToRads(event.get("end")),
           span = event.getSpan();
           
-      $start.css({
-        '-webkit-transform': [
-          'translate(', innerRadius * Math.cos(startAngle) + ctr.x, 'px,', innerRadius * Math.sin(startAngle) + ctr.y, 'px) ',
-          'rotate(', startAngle * 180 / Math.PI + 90, 'deg)'
-        ].join('')
-      });
-      $end.css({
-        '-webkit-transform': [
-          'translate(', innerRadius * Math.cos( endAngle ) + ctr.x, 'px,', innerRadius * Math.sin( endAngle ) + ctr.y, 'px) ',
-          'rotate(', endAngle * 180 / Math.PI + 90, 'deg)'
-        ].join('')
-      });
+      transform[transformProp] = [
+        'translate(', innerRadius * Math.cos(startAngle) + ctr.x, 'px,', innerRadius * Math.sin(startAngle) + ctr.y, 'px) ',
+        'rotate(', startAngle * 180 / Math.PI + 90, 'deg)'
+      ].join('');
+      $start.css(transform);
+
+      transform[transformProp] = [
+        'translate(', innerRadius * Math.cos( endAngle ) + ctr.x, 'px,', innerRadius * Math.sin( endAngle ) + ctr.y, 'px) ',
+        'rotate(', endAngle * 180 / Math.PI + 90, 'deg)'
+      ].join('');
+      $end.css(transform);
 
       fg.clearRect(0,0,w,h);
       
@@ -114,9 +114,12 @@
           tick = i % 12 == 0 ? 7 : (i % 2 == 0 ? 5 : 2);
           if(i % 12 == 0) {
             var $digit = $('<div>' + ((i+24) / 12 % 12 + 1) + '</div>').appendTo($digits);
-            $digit.css({
-              '-webkit-transform': ['translate(', ctr.x + digitRadius * cosa - $digit.width()/2, 'px,', ctr.y + digitRadius * sina - $digit.height()/2, 'px) '].join('')
-            });
+            transform[transformProp] = [
+              'translate(', ctr.x + digitRadius * cosa - $digit.width()/2, 'px,', 
+              ctr.y + digitRadius * sina - $digit.height()/2, 'px) '
+            ].join('');
+
+            $digit.css(transform);
           }
           bg.moveTo(ctr.x + outerRadius * cosa, ctr.y + outerRadius * sina);
           bg.lineTo(ctr.x + (outerRadius+tick) * cosa, ctr.y + (outerRadius+tick) * sina);

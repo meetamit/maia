@@ -85,7 +85,11 @@ body {
   margin-right:5px;
   opacity:1;
   -webkit-transition:all .5s linear;
+  -moz-transition:all .5s linear;
+  transition:all .5s linear;
   -webkit-transition-delay:.3s;
+  -moz-transition-delay:.3s;
+  transition-delay:.3s;
 }
 
 .events li .minz.action {
@@ -109,6 +113,8 @@ body {
   opacity:0;
   pointer-events:none;
   -webkit-transition:all .2s linear;
+  -moz-transition:all .2s linear;
+  transition:all .2s linear;
 }
 
 .events .add_event {
@@ -121,10 +127,14 @@ body {
 .events .space.closed {
   height:0px;
   -webkit-transition:all .6s ease-in-out;
+  -moz-transition:all .6s ease-in-out;
+  transition:all .6s ease-in-out;
 }
 .events .space.open {
   height:260px;
   -webkit-transition:all .6s ease-in-out;
+  -moz-transition:all .6s ease-in-out;
+  transition:all .6s ease-in-out;
 }
 
 .events .add_event.closed {
@@ -132,6 +142,8 @@ body {
 }
 .events .add_event.open {
   -webkit-transition:all 1s ease-in-out;
+  -moz-transition:all 1s ease-in-out;
+  transition:all 1s ease-in-out;
   opacity:1;
 }
 

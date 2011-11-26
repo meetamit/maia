@@ -29,7 +29,6 @@
 
 .clock .label {
   opacity:0;
-  -webkit-transition: opacity 1s ease-in;
   position:absolute;
   background-color:#000;
   color:#fff;
@@ -39,11 +38,16 @@
   white-space:nowrap;
   font-variant:small-caps;
   z-index:10;
+  -webkit-transition: opacity 1s ease-in;
+  -moz-transition: opacity 1s ease-in;
+  transition: opacity 1s ease-in;
 }
 
 .clock.dragged .label {
   opacity:1;
   -webkit-transition: opacity .3s linear;
+  -moz-transition: opacity .3s linear;
+  transition: opacity .3s linear;
 }
 
 .clock .handle {
@@ -78,6 +82,8 @@
 .clock .start.handle {
   border-radius:20px 0 0 20px;
   -webkit-transform-origin:36px 8px; /* 37px = 28px(width) + 8px(bleed) */
+  -moz-transform-origin:36px 8px;
+  transform-origin:36px 8px;
   margin-left:-36px;
   margin-top:-8px
 }
@@ -85,6 +91,8 @@
 .clock .end.handle {
   border-radius:0 20px 20px 0;
   -webkit-transform-origin:9px 8px; /* 9px = 1px(border) + 8px(bleed) */
+  -moz-transform-origin:9px 8px;
+  transform-origin:9px 8px;
   margin-left:-9px;
   margin-top:-8px;
 }
