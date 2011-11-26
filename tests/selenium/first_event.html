@@ -4,18 +4,45 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://amitair.local:3000/" />
-<title>Add Second Event</title>
+<title>Stubs</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Add Second Event</td></tr>
+<tr><td rowspan="1" colspan="3">Stubs</td></tr>
 </thead><tbody>
 <tr>
-	<td>click</td>
-	<td>css=.sleep .add</td>
+	<td>open</td>
+	<td>/?stub_now=1321038671000</td>
 	<td></td>
 </tr>
+<tr>
+	<td>click</td>
+	<td>css=div.action.minz</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.start.field .t</td>
+	<td>11:11am</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.end.field .t</td>
+	<td>11:11:11am</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.end.field .t</td>
+	<td>11:11:12am</td>
+</tr>
+<!---->
+<!--Shift start with button, then with drag-->
 <tr>
 	<td>mouseDown</td>
 	<td>css=.start.field span[data-minutes=&quot;-5&quot;]</td>
@@ -32,11 +59,81 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>css=.action.minz</td>
+	<td>verifyText</td>
+	<td>css=.start.field .t</td>
+	<td>10:45am</td>
+</tr>
+<tr>
+	<td>dragAndDrop</td>
+	<td>css=.start.handle</td>
+	<td>-10,0</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=.start.field .t</td>
+	<td>10:40am</td>
+</tr>
+<!---->
+<!--Move end time and varify it nudges start time-->
+<tr>
+	<td>mouseDown</td>
+	<td>css=.end.field span[data-minutes=&quot;-5&quot;]</td>
 	<td></td>
 </tr>
-
+<tr>
+	<td>pause</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>css=.end.field span[data-minutes=&quot;-5&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.start.field .t</td>
+	<td>7:35am</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.end.field .t</td>
+	<td>7:35am</td>
+</tr>
+<!---->
+<!--Pull end time back-->
+<tr>
+	<td>mouseDown</td>
+	<td>css=.end.field span[data-minutes=&quot;+5&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>500</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>css=.end.field span[data-minutes=&quot;-5&quot;]</td>
+	<td></td>
+</tr>
+<!---->
+<!--Close-->
+<tr>
+	<td>click</td>
+	<td>css=.action.ok</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>css=.strip .seg:eq(0)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>css=.strip .seg:eq(1)</td>
+	<td></td>
+</tr>
 </tbody></table>
 </body>
 </html>
