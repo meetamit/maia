@@ -34,6 +34,12 @@
   border-left:1px solid #555;
   height:6px;
   padding-left:2px;
+  font-weight:bold;
+}
+
+.strip .legend .tick span {
+  font-weight:normal;
+  font-size:6px;
 }
 
 @-webkit-keyframes glow {

@@ -65,11 +65,18 @@
       for(var i = ms0, ms1 = ms0 + maia.TWENTY_FOUR_HOURS; i <= ms1; i += maia.THREE_HOURS) {
         d.setTime(i);
         var hours = d.getHours(),
-            hoursStr = hours % 12 == 0 ? (hours == 12 ? 'noon' : 'mid\'nt') : (hours % 12 + (hours < 12 ? 'am' : 'pm')),
-            $tick = $('<div class="tick">' + hoursStr + '</div>').css({
-              position:'absolute',
-              left: (i - ms0) / mspp
-            }).appendTo($legend);
+            hoursStr;
+            
+        if(hours % 12 == 0)
+          hoursStr = hours == 12 ? 'N<span>OON</span>' : 'M<span>IDNIGHT</span>';
+        else
+          hoursStr = hours % 12 + (hours < 12 ? '<span>AM</span>' : '<span>PM</span>');
+            
+        // hoursStr = hours % 12 == 0 ? (hours == 12 ? 'noon' : 'mid\'nt') : (hours % 12 + (hours < 12 ? '<span>AM</span>' : '<span>PM</span>')),
+        $('<div class="tick">' + hoursStr + '</div>').css({
+          position:'absolute',
+          left: (i - ms0) / mspp
+        }).appendTo($legend);
       }
     }
   }
