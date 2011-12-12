@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <style type="text/css">
+      html { width:100%; height:!00%; }
+      body { margin:0; padding:0; width:100%; height:!00%; 
+        background-color:#000;
+      }
+      #keyboard div { 
+        display:inline-block;
+        width:12.5%;
+        height:100%;
+        text-align:center;
+        opacity:.3;
+        -webkit-transition:opacity .4s linear;
+        -moz-transition:opacity .4s linear;
+        transition:opacity .4s linear;
+      }
+      
+      #keyboard div.down {
+        opacity:.8;
+        -webkit-transition:opacity .1s linear;
+        -moz-transition:opacity .1s linear;
+        transition:opacity .1s linear;
+      }
+      .debug {
+        position:absolute;
+        z-index:100;
+        bottom:0;
+        padding:10px;
+        pointer-events:none;
+        font-family:'courier';
+        font-weight:bold;
+/*font-size:9px;line-height:9px;*/
+        color:#ccc;
+      }
+    </style>
+    <script type="text/javascript">var maia = {};</script>
+    <script type="text/javascript" srcx="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" src="/javascripts/lib/zepto.min.js"></script>
+    <script type="text/javascript" src="/javascripts/utils.js"></script>
+    <script type="text/javascript">
+      function trace(msg) {
+        $('.debug').html(msg);
+      }
+      $(document).ready(function() {
+/*
+        var audioElement = document.createElement('audio');
+        audioElement.setAttribute('src', '/audio/0.m4a');
+        audioElement.play();
+        $(audioElement).bind("load", function() {
+          console.log("foo");
+          audioElement.play();
+          $(".duration span").html(audioElement.duration);
+          $(".filename span").html(audioElement.src);
+        }, true);
+*/
+/*
+        var $audio = $('<audio></audio>').appendTo('body');
+        $audio.attr({ src:'/audio/0.m4a', type:"audio/mp3" });
+        $audio[0].load();
+        // $audio[0].play();
+        $audio.bind('loaded', function() {
+          console.log('boo');
+        });*/
+        
+        var audio = new Audio();
+        // audio.addEventListener('ended',function() { console.log("end"); }, false);
+        // audio.addEventListener('error',function() { console.log("error"); }, true);
+        $(audio).appendTo('body');
+        audio.src = '/audio/0.m4a';
+        audio.load();
+        
+        var audio2 = new Audio();
+        $(audio2).appendTo('body');
+        audio2.src = '/audio/2.m4a';
+        audio2.load();
+
+
+        var notes = [
+              { id:'c0', color:'#f00' },
+              { id:'d', color:'#0f0' },
+              { id:'e', color:'#44f' },
+              { id:'f', color:'#ff0' },
+              { id:'g', color:'#0ff' },
+              { id:'a', color:'#f0f' },
+              { id:'b', color:'#6f0' },
+              { id:'c1', color:'#f06' }
+            ],
+          
+            width = $('body').width(),
+            keyWidth = width / notes.length,
+            $keys = $('<div id="keyboard"></div>').appendTo('body');
+            
+        $.each(notes, function(i, note) {
+          var $key = note.$key = $('<div>' + note.id + '</div>').css({
+            backgroundColor: note.color
+          }).appendTo($keys);
+        });
+        
+        $(document).bind($.browser.touchDevice ? 'touchstart' : 'mousedown', update);
+        $(document).bind($.browser.touchDevice ? 'touchmove' : 'mousemove', update);
+        $(document).bind($.browser.touchDevice ? 'touchend' : 'mouseup', update);
+        
+        var indices = [],
+            isDown = false,
+            bit=0;
+        function update(event) {
+          if(!$.browser.touchDevice) {
+            switch(event.type) {
+              case 'mousemove':
+                if(!isDown) return;
+              case 'mousedown':
+                isDown = true;
+                break;
+              case 'mouseup':
+                isDown = false;
+                break;
+            }
+          }
+          event.preventDefault();
+
+          var previous = indices;
+          indices = $.map(
+            $.browser.touchDevice ? event.touches : isDown ? [event] : [],
+            function(touch) {
+              return Math.floor(touch.pageX / keyWidth);
+            }
+          );
+          $.each(indices, function(i, idx) {
+            var idxIdx = previous.indexOf(idx);
+            var theAudio = idx % 2 == 0 ? audio : audio2;
+            if(idxIdx == -1) {
+              // new touch
+              if(theAudio.paused) {
+                theAudio.play();
+              }
+              else {
+                theAudio.currentTime = 0.0;
+              }
+              
+              notes[idx].$key.addClass('down');
+            }
+            else {
+              // stay
+              previous.splice(idxIdx, 1);
+            }
+           
+          });
+          
+          $.each(previous, function(i, idx) {
+            notes[idx].$key.removeClass('down');
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <!-- <audio controls="controls">
+      <source id="c0" src="/audio/0.m4a" type="audio/mp3" />
+    </audio> -->
+    <div class="debug">Hi</div>
+  </body>
+</html>

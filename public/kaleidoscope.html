@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .hexagon {
+        -webkit-transform:scale(.5,.5);
+        position: absolute;
+        margin:200px 0 0 200px;
+      }
+      
+      .leaf {
+        -webkit-transform-origin:200px 350px;
+        width:400px;
+        height:350px;
+        position:absolute;
+        left: -200px;
+        top: -350px;
+      }
+
+      .half_leaf {
+        left:50%;
+        position:absolute;
+        -webkit-mask:url('/images/triangle_mask_200x350.png') no-repeat scroll left bottom;
+        width:200px;
+        height:350px;
+      }
+      
+      .half_leaf.reflected {
+        -webkit-transform:scale(-1, 1);
+        left:auto;
+        right:50%;
+      }
+      .half_leaf img {
+        -webkit-transform:rotate(0);
+      }
+    </style>
+    <script type="text/javascript">maia = {};</script>
+    <script type="text/javascript" src="/javascripts/lib/zepto.min.js"></script>
+    <script type="text/javascript" src="/javascripts/kaleidoscope.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        new maia.Kaleidoscope($('body'));
+      });
+/*
+      var rules = document.styleSheets[0].cssRules,
+          imgRule = null;
+      for(var i=0; i < rules.length; i++) {
+        if(rules[i].cssText.indexOf('.half_leaf img') > -1) {
+          imgRule = rules[i];
+          break;
+        }
+      }
+      
+      var degs = 0;
+      setInterval(function() {
+        degs += 1;
+        imgRule.style.cssText = '-webkit-transform: rotate(' + degs + 'deg);';
+      }, 30);
+*/
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
