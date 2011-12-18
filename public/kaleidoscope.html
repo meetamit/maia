@@ -3,9 +3,10 @@
   <head>
     <style>
       .hexagon {
-        -webkit-transform:scale(.5,.5);
+/*        -webkit-transform:scale(.5,.5);*/
+        -webkit-transform:scale(3,3);
         position: absolute;
-        margin:200px 0 0 200px;
+        margin:250px 0 0 300px;
       }
       
       .leaf {
@@ -30,7 +31,7 @@
         left:auto;
         right:50%;
       }
-      .half_leaf img {
+      .half_leaf .img {
         -webkit-transform:rotate(0);
       }
     </style>
@@ -39,7 +40,7 @@
     <script type="text/javascript" src="/javascripts/kaleidoscope.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        new maia.Kaleidoscope($('body'));
+        new maia.Kaleidoscope($('body'), 80, 12);
       });
 /*
       var rules = document.styleSheets[0].cssRules,

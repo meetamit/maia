@@ -1,6 +1,17 @@
 ## Known Issues
 When the pre-assigned time is round (ie :40 or :45), but behind the scenes the seconds are not, clicking -5min or -1hr don't work as intended.
 
+## Names
+AgooSuite
+Agu Way    :    Agoo Way     :     Agoo Life
+AgooWay, AgooLife
+Babeglow
+Maia
+Babetrack (dot com is available)
+Babyway
+Sleep'n'more Baby Goods
+BabySync
+
 ## Design
 Hobo Std is pretty neat
 Yeah, orientation should go between clock and timeline (with +/- just on timeline probably)
