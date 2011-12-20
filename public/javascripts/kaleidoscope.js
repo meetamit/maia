@@ -1,4 +1,94 @@
 (function() {
+  maia.CanvasKaleidoscope = CanvasKaleidoscope;
+  function CanvasKaleidoscope($container, alt, numHalfLeaves) {
+    var canvas = document.createElement('canvas'),
+        context = canvas.getContext('2d'),
+        img = new Image(),
+        leafSym,
+        hexSym,
+        ang = 2 * Math.PI / numHalfLeaves,
+        r = alt / Math.cos(ang);
+
+    canvas.width = alt * 6;
+    canvas.height = r * 3;
+    document.body.appendChild(canvas);
+    
+    $(img).bind('load', function() {
+      leafSym = new HalfLeafSymbol(img, alt, ang);
+      hexSym = new HexSymbol(leafSym, alt, r, numHalfLeaves / 2);
+    });
+    img.src = "/images/wooshes_00.png";
+    
+    setInterval(function() {
+      leafSym.update();
+      hexSym.update();
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for(var i = (j % 2 == 1 ? 0 : -1); i < 3; i++) {
+        for(var j = 0; j < 3; j++) {
+          context.drawImage(hexSym.canvas, (2 * i + j % 2) * alt, j * r * (Math.sin(ang) + 1) - r);
+        }
+      }
+    }, 50);
+  }
+  
+  function HexSymbol(leafSym, alt, r, numLeaves) {
+    var canvas = this.canvas = document.createElement('canvas'),
+        context = canvas.getContext('2d');
+
+    canvas.width = alt * 2;
+    canvas.height = r * 2;
+    
+    (this.update = function() {
+      context.clearRect(0, 0, alt * 2, r * 2);
+      for(var i = 0; i < numLeaves; i++) {
+        for(var j = 0; j < 2; j++) {
+          context.save();
+          context.translate(alt, r);
+          context.rotate(2 * Math.PI * i / numLeaves);
+          if(j % 2 == 0) {
+            context.scale(1,-1);
+          }
+          // context.translate(-3, -1);
+          context.drawImage(leafSym.canvas, 0, 0);
+          context.restore();
+        }
+      }
+    })();
+  }
+  
+  function HalfLeafSymbol(img, alt, ang) {
+    var canvas = this.canvas = document.createElement('canvas'),
+        context = canvas.getContext('2d'),
+        w = alt,
+        h = Math.round(alt * Math.tan(ang)),
+        slope = h / w;
+        
+    canvas.width = w;
+    canvas.height = h;
+    // document.body.appendChild(canvas);
+    
+    context.beginPath();
+    context.moveTo(-2,0);
+    context.lineTo(w,0);
+    context.lineTo(w,h+2);
+    context.clip();
+
+    var rot = 0;
+    (this.update = function() {
+      context.save(); 
+      context.clearRect(0, 0, w, h);
+      context.translate(img.width/2, 0*img.height/2);
+      context.rotate(rot * Math.PI / 180);
+      context.translate(-img.width/2, -img.height/2);
+      rot -=1;
+      context.drawImage(img, 0, 0);
+      context.restore();
+    })();
+  }
+})();
+
+(function() {
   maia.Kaleidoscope = Kaleidoscope;
   function Kaleidoscope($container, h, numHalfLeaves) {
 /*

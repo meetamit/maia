@@ -2,6 +2,10 @@
 <html>
   <head>
     <style>
+      body {
+        background-color:#888;
+/*        -webkit-transform:perspective(400px) rotateX(30deg);*/
+      }
       .hexagon {
 /*        -webkit-transform:scale(.5,.5);*/
         -webkit-transform:scale(3,3);
@@ -40,7 +44,8 @@
     <script type="text/javascript" src="/javascripts/kaleidoscope.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        new maia.Kaleidoscope($('body'), 80, 12);
+        new maia.CanvasKaleidoscope($('body'), 120, 12);
+        //new maia.Kaleidoscope($('body'), 80, 12);
       });
 /*
       var rules = document.styleSheets[0].cssRules,
