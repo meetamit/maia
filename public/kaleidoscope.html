@@ -4,67 +4,51 @@
     <style>
       body {
         background-color:#888;
-/*        -webkit-transform:perspective(400px) rotateX(30deg);*/
-      }
-      .hexagon {
-/*        -webkit-transform:scale(.5,.5);*/
-        -webkit-transform:scale(3,3);
-        position: absolute;
-        margin:250px 0 0 300px;
-      }
-      
-      .leaf {
-        -webkit-transform-origin:200px 350px;
-        width:400px;
-        height:350px;
-        position:absolute;
-        left: -200px;
-        top: -350px;
+/*      -webkit-transform:perspective(400px) rotateX(30deg); */
       }
 
-      .half_leaf {
-        left:50%;
+      .editor {
         position:absolute;
-        -webkit-mask:url('/images/triangle_mask_200x350.png') no-repeat scroll left bottom;
-        width:200px;
-        height:350px;
+        bottom:30px;
+        right:30px;
+        background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,.85) 39%, rgba(255,255,255,.85) 88%);
+        padding:12px;
       }
       
-      .half_leaf.reflected {
-        -webkit-transform:scale(-1, 1);
-        left:auto;
-        right:50%;
+      .editor input {
+        width:180px;
+        font-size:12px;
+        font-family:courier;
+        font-weight:bold;
+        display:block;
       }
-      .half_leaf .img {
-        -webkit-transform:rotate(0);
+      
+      .editor .leaf {
+        display:inline-block;
+        border:1px solid #888;
+/*        -webkit-transform:rotate(-90deg);*/
       }
     </style>
     <script type="text/javascript">maia = {};</script>
     <script type="text/javascript" src="/javascripts/lib/zepto.min.js"></script>
+    <script type="text/javascript" src="/javascripts/utils.js"></script>
     <script type="text/javascript" src="/javascripts/kaleidoscope.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        new maia.CanvasKaleidoscope($('body'), 120, 12);
-        //new maia.Kaleidoscope($('body'), 80, 12);
+        var scope = new maia.Kaleidoscope($('.editor input').val(), 120, 12),
+            editor = new maia.KaleidoscopeEditor(scope);
+        
+        $(document).bind('keydown', function(e) {
+          if(e.which == 32) {
+            scope.playOrPause();
+          }
+        });
       });
-/*
-      var rules = document.styleSheets[0].cssRules,
-          imgRule = null;
-      for(var i=0; i < rules.length; i++) {
-        if(rules[i].cssText.indexOf('.half_leaf img') > -1) {
-          imgRule = rules[i];
-          break;
-        }
-      }
-      
-      var degs = 0;
-      setInterval(function() {
-        degs += 1;
-        imgRule.style.cssText = '-webkit-transform: rotate(' + degs + 'deg);';
-      }, 30);
-*/
     </script>
   </head>
   <body>
+    <div class="editor">
+      <input type="text" value="/images/wooshes_00.png">
+    </div>
   </body>
 </html>
