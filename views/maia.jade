@@ -3,6 +3,7 @@ html
   head
     title= 'Maia'
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    link(rel='stylesheet', href='/stylesheets/boilerplate.css')
     link(rel='stylesheet', href='/stylesheets/maia.css')
     link(rel='stylesheet', href='/stylesheets/clock.css')
     link(rel='stylesheet', href='/stylesheets/strip.css')
@@ -19,7 +20,7 @@ html
     script(type='text/javascript', src='/javascripts/models.js')
     script(type='text/javascript', src='/javascripts/dashboard.js')
     script(type='text/javascript')
-      $(document).ready(function() {
+      $(function() {
         new maia.Dashboard( $('.dashboard') );
         // $('.sleep .add').trigger('click');
       });

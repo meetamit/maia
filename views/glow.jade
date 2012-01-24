@@ -1,0 +1,34 @@
+!!!
+html
+  head
+    title= 'Maia'
+    meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    
+    link(rel='stylesheet', href='/stylesheets/boilerplate.css')
+    link(rel='stylesheet', href='/stylesheets/glow.css')
+    
+    script(type='text/javascript', src='/javascripts/lib/zepto.min.js')
+    script(type='text/javascript')
+      maia = {};
+      $(function() {
+        $(document.body).css({ height:600 });
+        window.scrollTo(0,0);
+        setTimeout(function() { $(document.body).css({ height:window.innerHeight }); }, 0);
+        // $('#debug').text(window.innerHeight + ", " + $(document.body).height());
+      });
+  body
+    .chart
+      .date Today
+    ul.pad
+      li.sleep
+        label Sleep
+        .add.button +
+      li.eat
+        label Eat
+        .add.button +
+      li.poop
+        label Poop
+        .add.button +
+      li.notes
+        label Notes
+        .add.button +

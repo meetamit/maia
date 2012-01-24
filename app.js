@@ -27,3 +27,9 @@ app.get('/', function(req, res) {
     layout: false
   });
 });
+
+app.get('/glow', function(req, res) {
+  res.render('glow', {
+    layout: false
+  });
+});
