@@ -14,21 +14,27 @@ html
         $(document.body).css({ height:600 });
         window.scrollTo(0,0);
         setTimeout(function() { $(document.body).css({ height:window.innerHeight }); }, 0);
+        setTimeout(function() { $('.launchpad').addClass('out');$('.add_event').removeClass('out'); }, 1000);
         // $('#debug').text(window.innerHeight + ", " + $(document.body).height());
       });
   body
     .chart
       .date Today
-    ul.pad
+    ul.launchpad.panel
       li.sleep
         label Sleep
-        .add.button +
+        .action.add +
       li.eat
         label Eat
-        .add.button +
+        .action.add +
       li.poop
         label Poop
-        .add.button +
+        .action.add +
       li.notes
         label Notes
-        .add.button +
+        .action.add +
+    .add_event.panel.out
+      label.sleep Sleep
+      .action.ok Done
+      .action.x Delete
+      hr
