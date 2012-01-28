@@ -5,16 +5,32 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
     
     link(rel='stylesheet', href='/stylesheets/boilerplate.css')
+    link(rel='stylesheet', href='/stylesheets/clock.css')
     link(rel='stylesheet', href='/stylesheets/glow.css')
     
     script(type='text/javascript', src='/javascripts/lib/zepto.min.js')
+    script(type='text/javascript', src='/javascripts/lib/zepto_fx.js')// Hope to DEPR, but might be impossible
+    script(type='text/javascript', src='/javascripts/lib/underscore-min.js')
+    script(type='text/javascript', src='/javascripts/lib/backbone-min.js')
     script(type='text/javascript')
       maia = {};
+    script(type='text/javascript', src='/javascripts/utils.js')
+    script(type='text/javascript', src='/javascripts/ui.js')
+    script(type='text/javascript', src='/javascripts/clock.js')
+    script(type='text/javascript', src='/javascripts/strip.js')
+    script(type='text/javascript', src='/javascripts/models.js')
+    script(type='text/javascript', src='/javascripts/glow.js')
+    script(type='text/javascript')
+      $(function() {
+        new maia.Glow();
+        // $('.sleep .add').trigger('click');
+      });
+    script(type='text/javascript')
       $(function() {
         $(document.body).css({ height:600 });
         window.scrollTo(0,0);
         setTimeout(function() { $(document.body).css({ height:window.innerHeight }); }, 0);
-        setTimeout(function() { $('.launchpad').addClass('out');$('.add_event').removeClass('out'); }, 1000);
+        // setTimeout(function() { $('.launchpad').addClass('out');$('.event_editor').removeClass('out'); }, 1000);
         // $('#debug').text(window.innerHeight + ", " + $(document.body).height());
       });
   body
@@ -33,8 +49,27 @@ html
       li.notes
         label Notes
         .action.add +
-    .add_event.panel.out
+    .event_editor.panel.out
       label.sleep Sleep
       .action.ok Done
       .action.x Delete
       hr
+      
+      //- div(style='text-align:right; padding-right:20px; padding-top:35px;')
+      .clock
+        .digits
+        canvas.bg
+        canvas.fg
+        .end.handle
+          .inner
+        .start.handle
+          .inner
+        .label 12:34
+      
+      .start.field
+        label FROM
+        .t ###
+        
+      .end.field
+        label UNTIL
+        .t ###

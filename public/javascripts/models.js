@@ -75,8 +75,10 @@
         '<em>',
           hours + ':' + String(date.getMinutes() + 100).substr(1),
         '</em>',
-        hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) : '',
-        isPM ? 'pm' : 'am'
+        '<span>',
+          hasSeconds ? ':' + String(date.getSeconds() + 100).substr(1) + '<br>' : '',
+          isPM ? 'PM' : 'AM',
+        '</span>'
       ].join('');
     },
     
