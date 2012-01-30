@@ -1,7 +1,7 @@
 /*html { height:100%; }*/
 body { 
   font:24px/1.5 Helvetica,Arial,"Lucida Grande","Lucida Sans",Tahoma,Verdana,sans-serif;
-  background:transparent url('/images/glow_bg.jpg') no-repeat scroll center; }
+  background:transparent url('/images/glow_bg.jpg') no-repeat scroll center; overflow:hidden}
   
 .action {
    border-radius:5px; height:30px;
@@ -29,7 +29,7 @@ body {
 .panel { -webkit-transition:opacity .3s linear; }
 .panel.out { opacity:0; pointer-events:none; }
 
-.event_editor { padding-top:1px; height:347px; border-bottom-left-radius:350px; border-bottom-right-radius:350px; }
+.event_editor { padding-top:1px; xheight:347px; border-bottom-left-radius:350px; border-bottom-right-radius:350px; }
 .event_editor .action { 
   font-size:12px; font-weight:bold; height:30px; line-height:30px; display:inline-block; padding:0 12px;
   float:right; margin:6px 7px 0 0;
@@ -49,7 +49,11 @@ body {
 .event_editor .field em { font-size:22px; line-height:21px; }
 
 .event_editor hr { 
-  border-top:1px solid rgba(0,0,0,.2); border-bottom:1px solid rgba(255,255,255,.2); margin:0; border-right:none; border-left:none; }
+  border-top:1px solid rgba(0,0,0,.2); border-bottom:1px solid rgba(255,255,255,.2); margin:0; border-right:none; border-left:none;
+}
+
+.event_editor .clock { margin:14px 8px 8px; /*margin-top:30px;*/ width:auto; }
+
 
 .chart { color:#fff; height:80px; background-color:rgba(0,0,0,.2); }
 .chart .date { margin-left:7px; text-shadow:0 0 4px rgba(255,255,190,.7); }

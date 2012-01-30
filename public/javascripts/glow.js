@@ -37,7 +37,9 @@
     var event,
         $start = $container.find('.start.field'),
         $end = $container.find('.end.field'),
-        clock = new maia.Clock($container.find('.clock'));
+        
+        $clock = $container.find('.clock'),
+        clock = new maia.Clock($clock.css({ height:$clock.width() }));
 
     this.edit = function(_event) {
       if(event)

@@ -88,7 +88,9 @@
         $label.css({
           right:   -pt.x + h,
           bottom: pt.y + 40 * Math.pow( Math.sin(angle / 2), 2 ) + 10 + 30 * Math.max(0, Math.sin(angle))
-        }).html(dragged == END ? event.get('fEnd') : event.get('fStart'));
+        }).html(
+          ( dragged == END ? event.get('fEnd') : event.get('fStart') ).split('<br>').join('').toLowerCase()
+        );
       }
     }
 
@@ -96,9 +98,9 @@
       w = $fg.width();
       h = $fg.height();
       ctr = { x:w*.5, y:h*.5 };
-      innerRadius = Math.min(w,h) * .35 + 15;
-      outerRadius = Math.min(w,h) * .35 + 20;
-      digitRadius = Math.min(w,h) * .54;
+      innerRadius = Math.min(w,h) * .5 - 32;
+      outerRadius = Math.min(w,h) * .5 - 26;
+      digitRadius = Math.min(w,h) * .5 - 15;
       
       if(w * h) {
         bgCanvas.width = fgCanvas.width = w;
@@ -106,25 +108,48 @@
         
         var a, tick, cosa, sina,
             $digits = $container.find('.digits').empty();
+/*      var radgrad = bg.createRadialGradient(ctr.x, ctr.y, outerRadius ,ctr.x, ctr.y, outerRadius+7);
+        radgrad.addColorStop(0, 'rgba(255,255,255,1)');//'#ff0000');
+        radgrad.addColorStop(1, 'rgba(255,255,255,0)');//'#0000ff');*/
         for(var i=0; i<144; i++) {
           a = 2 * Math.PI * i/144;
-          cosa = Math.cos(a);
-          sina = Math.sin(a);
+          cosa = Math.round(10000 * Math.cos(a) ) / 10000;
+          sina = Math.round(10000 * Math.sin(a) ) / 10000;
           bg.beginPath();
           tick = i % 12 == 0 ? 7 : (i % 2 == 0 ? 5 : 2);
           if(i % 12 == 0) {
-            var $digit = $('<div>' + ((i+24) / 12 % 12 + 1) + '</div>').appendTo($digits);
+            var hrs = (i+24) / 12 % 12 + 1,
+                html;
+            switch(hrs) {
+              // TODO: This is broken (doesn't really do am/pm
+              case 0:
+              case 12:
+                // html = '<div>M<span>idnight</span></div>';
+                html = '<div>N<span>oon</span></div>';
+                break;
+              default:
+                html = '<div>' + hrs + '<span>pm</span></div>';
+            }
+            
+            var $digit = $(html).appendTo($digits);
             transform[transformProp] = [
-              'translate(', ctr.x + digitRadius * cosa - $digit.width()/2, 'px,', 
-              ctr.y + digitRadius * sina - $digit.height()/2, 'px) '
+              // 'translate(', ctr.x + digitRadius * cosa - $digit.width()/2, 'px,', 
+              // ctr.y + digitRadius * sina - $digit.height()/2, 'px) '
+              'translate(', ctr.x + digitRadius * cosa - $digit.width() * (.5 + (cosa == 0 ? 0 : cosa < 0 ? .3 : -.3)), 'px,', 
+              ctr.y + digitRadius * sina - $digit.height() * (.5 + (sina == 0 ? .1 : sina < 0 ? .4 : -.1)), 'px) '
             ].join('');
 
             $digit.css(transform);
           }
+          
           bg.moveTo(ctr.x + outerRadius * cosa, ctr.y + outerRadius * sina);
           bg.lineTo(ctr.x + (outerRadius+tick) * cosa, ctr.y + (outerRadius+tick) * sina);
           bg.lineWidth = i % 12 == 0 ? 3 : 1;
-          bg.strokeStyle = "#aaa";
+          var radgrad = bg.createRadialGradient(ctr.x, ctr.y, outerRadius-1 ,ctr.x, ctr.y, outerRadius+tick);
+          radgrad.addColorStop(.2, 'rgba(255,255,255,1)');//'#ff0000');
+          radgrad.addColorStop(1, 'rgba(255,255,255,0)');//'#0000ff');
+          bg.strokeStyle = radgrad;
+
           bg.stroke();
         }
       }
