@@ -17,8 +17,6 @@
   function Clock($container, event) {
     var $bg = $container.find('canvas.bg'),
         $fg = $container.find('canvas.fg'),
-        $start = $container.find('.start.handle'),
-        $end = $container.find('.end.handle'),
         $startDiv = $container.find('.start.container'),
         $startThumb = $startDiv.find('.thumb'),
         $endDiv = $container.find('.end.container'),
@@ -43,22 +41,14 @@
           endAngle = Clock.dateToRads(event.get("end")),
           span = event.getSpan();
           
-      transform[transformProp] = [
-        'translate(', innerRadius * Math.cos(startAngle) + ctr.x, 'px,', innerRadius * Math.sin(startAngle) + ctr.y, 'px) ',
-        'rotate(', startAngle * 180 / Math.PI + 90, 'deg)'
-      ].join('');
-      $start.css(transform);
-
-      transform[transformProp] = [
-        'translate(', innerRadius * Math.cos( endAngle ) + ctr.x, 'px,', innerRadius * Math.sin( endAngle ) + ctr.y, 'px) ',
-        'rotate(', endAngle * 180 / Math.PI + 90, 'deg)'
-      ].join('');
-      $end.css(transform);
-      
       transform[transformProp] = 'rotate(' + (startAngle * 180 / Math.PI + 90) + 'deg)';
       $startDiv.css(transform);
+      transform[transformProp] = 'rotate(' + (-startAngle * 180 / Math.PI - 90) + 'deg)';
+      $startThumb.css(transform);
       transform[transformProp] = 'rotate(' + (endAngle * 180 / Math.PI + 90) + 'deg)';
       $endDiv.css(transform);
+      transform[transformProp] = 'rotate(' + (-endAngle * 180 / Math.PI - 90) + 'deg)';
+      $endThumb.css(transform);
 
       fg.clearRect(0,0,w,h);
       
@@ -112,9 +102,18 @@
       digitRadius = Math.min(w,h) * .5 - 15;
       
       $startDiv.find('img').css('height', innerRadius);
-      $startThumb.css('top', -(innerRadius - 30));
       $endDiv.find('img').css('height', innerRadius);
-      $endThumb.css('top', -(innerRadius - 30));
+      var sz = .21 * innerRadius,
+          d = .03 * innerRadius;
+      $container.find('.thumb').css({
+        'top': -innerRadius * .76,
+        'width': sz,
+        'height': sz,
+        'line-height': sz + 'px',
+        'right': d,
+        'font-size': sz < 25 ? '8px' : '9px'
+      });
+      $endThumb.css('left', d);
       
       
       if(w * h) {
@@ -148,8 +147,6 @@
             
             var $digit = $(html).appendTo($digits);
             transform[transformProp] = [
-              // 'translate(', ctr.x + digitRadius * cosa - $digit.width()/2, 'px,', 
-              // ctr.y + digitRadius * sina - $digit.height()/2, 'px) '
               'translate(', ctr.x + digitRadius * cosa - $digit.width() * (.5 + (cosa == 0 ? 0 : cosa < 0 ? .3 : -.3)), 'px,', 
               ctr.y + digitRadius * sina - $digit.height() * (.5 + (sina == 0 ? .1 : sina < 0 ? .4 : -.1)), 'px) '
             ].join('');
@@ -176,8 +173,8 @@
     };
 
     updateSize();
-    $start.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
-    $end.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
+    $startThumb.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
+    $endThumb.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
 
     var dragged,
         date0, date1ms,
@@ -188,11 +185,11 @@
     function dragStart(e) {
       $container.addClass("dragged");
       e.preventDefault();
-      if(e.target == $start[0]) {
+      if(e.target == $startThumb[0]) {
         dragged = START;
         date0 = event.get(START);
       }
-      else if(e.target == $end[0]) {
+      else if(e.target == $endThumb[0]) {
         dragged = END;
         date0 = event.get(END);
       }

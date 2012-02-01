@@ -81,11 +81,12 @@
   font-weight:bold;
   color:#1b2368;
   border-radius:100px;
-  border:1px solid #6a7694;
-/*  background-color:#5f79a9;*/
-/*  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 50%, #7b9fbc 0%, #52699e 100%);*/
-  background: -moz-radial-gradient(center, ellipse cover, #8cafcc 0%, #52699e 100%); /* FF3.6+ */
-  background: -webkit-radial-gradient(center, ellipse cover, #8cafcc 0%,#52699e 100%); /* Chrome10+,Safari5.1+ */
+  border-top:1px solid rgba(255,255,255,.5);
+  border-bottom:1px solid rgba(0,0,0,.5);
+  background: #7b9fbc; /* Old browsers */
+  background: -moz-radial-gradient(center, ellipse cover, #8cafcc 0%, #52699e 95%); /* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#8cafcc), color-stop(95%,#52699e)); /* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, ellipse cover, #8cafcc 0%,#52699e 95%); /* Chrome10+,Safari5.1+ */
 }
 .clock .end .thumb {
   left:0;

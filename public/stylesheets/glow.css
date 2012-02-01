@@ -29,7 +29,7 @@ body {
 .panel { -webkit-transition:opacity .3s linear; }
 .panel.out { opacity:0; pointer-events:none; }
 
-.event_editor { padding-top:1px; xheight:347px; border-bottom-left-radius:350px; border-bottom-right-radius:350px; }
+.event_editor { padding-top:1px; border-bottom-left-radius:350px; border-bottom-right-radius:350px; }
 .event_editor .action { 
   font-size:12px; font-weight:bold; height:30px; line-height:30px; display:inline-block; padding:0 12px;
   float:right; margin:6px 7px 0 0;
