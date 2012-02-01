@@ -53,6 +53,44 @@
   transition: opacity .3s linear;
 }
 
+.clock .container {
+  position:absolute;
+  left:50%;
+  top:50%;
+}
+
+.clock .container img {
+  position:absolute;
+  bottom:0;
+  right:0;
+}
+.clock .end.container img {
+  left:0;
+  -webkit-transform:scale(-1,1);
+}
+
+.clock .thumb {
+  position:absolute;
+  bottom:75px;
+  right:0;
+  width:30px;
+  height:30px;
+  font-size:9px;
+  line-height:30px;
+  text-align:center;
+  font-weight:bold;
+  color:#1b2368;
+  border-radius:100px;
+  border:1px solid #6a7694;
+/*  background-color:#5f79a9;*/
+/*  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 50%, #7b9fbc 0%, #52699e 100%);*/
+  background: -moz-radial-gradient(center, ellipse cover, #8cafcc 0%, #52699e 100%); /* FF3.6+ */
+  background: -webkit-radial-gradient(center, ellipse cover, #8cafcc 0%,#52699e 100%); /* Chrome10+,Safari5.1+ */
+}
+.clock .end .thumb {
+  left:0;
+}
+
 .clock .handle {
   content:'.';
   position:absolute;

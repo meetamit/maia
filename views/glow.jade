@@ -23,7 +23,7 @@ html
     script(type='text/javascript')
       $(function() {
         new maia.Glow();
-        // $('.sleep .add').trigger('click');
+        $('.sleep .add').trigger('click');
       });
     script(type='text/javascript')
       $(function() {
@@ -60,6 +60,12 @@ html
         .digits
         canvas.bg
         canvas.fg
+        .start.container
+          img(src="/images/clock_handle_chrome.png", style="height:183px;")
+          .thumb FROM
+        .end.container
+          img(src="/images/clock_handle_chrome.png", style="height:183px;")
+          .thumb UNTIL
         .end.handle
           .inner
         .start.handle

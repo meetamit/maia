@@ -19,6 +19,10 @@
         $fg = $container.find('canvas.fg'),
         $start = $container.find('.start.handle'),
         $end = $container.find('.end.handle'),
+        $startDiv = $container.find('.start.container'),
+        $startThumb = $startDiv.find('.thumb'),
+        $endDiv = $container.find('.end.container'),
+        $endThumb = $endDiv.find('.thumb'),
         $label = $container.find('.label'),
         bgCanvas = $bg[0], fgCanvas = $fg[0],
         bg = bgCanvas.getContext("2d"),
@@ -50,6 +54,11 @@
         'rotate(', endAngle * 180 / Math.PI + 90, 'deg)'
       ].join('');
       $end.css(transform);
+      
+      transform[transformProp] = 'rotate(' + (startAngle * 180 / Math.PI + 90) + 'deg)';
+      $startDiv.css(transform);
+      transform[transformProp] = 'rotate(' + (endAngle * 180 / Math.PI + 90) + 'deg)';
+      $endDiv.css(transform);
 
       fg.clearRect(0,0,w,h);
       
@@ -98,9 +107,15 @@
       w = $fg.width();
       h = $fg.height();
       ctr = { x:w*.5, y:h*.5 };
-      innerRadius = Math.min(w,h) * .5 - 32;
+      innerRadius = Math.min(w,h) * .5 - 28;
       outerRadius = Math.min(w,h) * .5 - 26;
       digitRadius = Math.min(w,h) * .5 - 15;
+      
+      $startDiv.find('img').css('height', innerRadius);
+      $startThumb.css('top', -(innerRadius - 30));
+      $endDiv.find('img').css('height', innerRadius);
+      $endThumb.css('top', -(innerRadius - 30));
+      
       
       if(w * h) {
         bgCanvas.width = fgCanvas.width = w;
