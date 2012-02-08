@@ -72,7 +72,7 @@
         var angle = dragged == END ? endAngle : startAngle;
         angle = (angle + Math.PI/2).mod(2 * Math.PI);
         var f = angle / 2,
-            pt = { x:(outerRadius+1) * Math.sin(angle) + ctr.x, y:(outerRadius+1) * Math.cos(angle) + ctr.y };
+            pt = { x:(innerRadius*.7) * Math.sin(angle) + ctr.x, y:(innerRadius*.7) * Math.cos(angle) + ctr.y };
         $label.css({
           right:   -pt.x + h,
           bottom: pt.y + 40 * Math.pow( Math.sin(angle / 2), 2 ) + 10 + 30 * Math.max(0, Math.sin(angle))

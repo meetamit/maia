@@ -41,9 +41,9 @@
   white-space:nowrap;
   font-variant:small-caps;
   z-index:10;
-  -webkit-transition: opacity 1s ease-in;
-  -moz-transition: opacity 1s ease-in;
-  transition: opacity 1s ease-in;
+  -webkit-transition: opacity .5s ease-in;
+  -moz-transition: opacity .5s ease-in;
+  transition: opacity .5s ease-in;
 }
 
 .clock.dragged .label {
@@ -61,8 +61,8 @@
 
 .clock .handle img {
   position:absolute;
-  bottom:0;
   right:0;
+  pointer-events:none;
 }
 .clock .end.handle img {
   left:0;
@@ -83,6 +83,7 @@
   border-radius:100px;
   border-top:1px solid rgba(255,255,255,.5);
   border-bottom:1px solid rgba(0,0,0,.5);
+  cursor:pointer;
   background: #7b9fbc; /* Old browsers */
   background: -moz-radial-gradient(center, ellipse cover, #8cafcc 0%, #52699e 95%); /* FF3.6+ */
   background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#8cafcc), color-stop(95%,#52699e)); /* Chrome,Safari4+ */
