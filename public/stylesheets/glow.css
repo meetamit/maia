@@ -1,7 +1,15 @@
 /*html { height:100%; }*/
 body { 
   font:24px/1.5 Helvetica,Arial,"Lucida Grande","Lucida Sans",Tahoma,Verdana,sans-serif;
-  background:transparent url('/images/glow_bg.jpg') no-repeat scroll center; overflow:hidden}
+  background:transparent url('/images/glow_bg.jpg') no-repeat scroll center; overflow:hidden
+}
+
+.unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   user-select: none;
+}
   
 .action {
    border-radius:5px; height:30px;
