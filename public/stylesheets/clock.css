@@ -53,18 +53,18 @@
   transition: opacity .3s linear;
 }
 
-.clock .container {
+.clock .handle {
   position:absolute;
   left:50%;
   top:50%;
 }
 
-.clock .container img {
+.clock .handle img {
   position:absolute;
   bottom:0;
   right:0;
 }
-.clock .end.container img {
+.clock .end.handle img {
   left:0;
   -webkit-transform:scale(-1,1);
 }
@@ -103,51 +103,4 @@
   background: -moz-radial-gradient(35% 35%, ellipse cover, #555 0%, #111 95%); /* FF3.6+ */
   background: -webkit-gradient(radial, 35% 35%, 0px, center center, 100%, color-stop(0%,#555), color-stop(95%,#111)); /* Chrome,Safari4+ */
   background: -webkit-radial-gradient(35% 35%, ellipse cover, #555 0%,#111 95%); /* Chrome10+,Safari5.1+ */
-}
-
-.clock .handle {
-  content:'.';
-  position:absolute;
-  left:0;
-  top:0;
-  width:44px;
-  height:44px;
-/*  background-color:#fcc;*/
-}
-
-.clock .handle .inner {
-  position:absolute;
-  top:8px;
-  bottom:8px;
-  left:8px;
-  right:8px;
-  border:1px solid #00a;
-  background-color:#fff;
-  pointer-events: none;
-}
-
-.clock .start.handle .inner {
-  border-radius:15px 0 0 15px;
-}
-
-.clock .end.handle .inner {
-  border-radius:0 15px 15px 0;
-}
-
-.clock .start.handle {
-  border-radius:20px 0 0 20px;
-  -webkit-transform-origin:36px 8px; /* 37px = 28px(width) + 8px(bleed) */
-  -moz-transform-origin:36px 8px;
-  transform-origin:36px 8px;
-  margin-left:-36px;
-  margin-top:-8px
-}
-
-.clock .end.handle {
-  border-radius:0 20px 20px 0;
-  -webkit-transform-origin:9px 8px; /* 9px = 1px(border) + 8px(bleed) */
-  -moz-transform-origin:9px 8px;
-  transform-origin:9px 8px;
-  margin-left:-9px;
-  margin-top:-8px;
 }

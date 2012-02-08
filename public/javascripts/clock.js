@@ -17,10 +17,10 @@
   function Clock($container, event) {
     var $bg = $container.find('canvas.bg'),
         $fg = $container.find('canvas.fg'),
-        $startDiv = $container.find('.start.container'),
-        $startThumb = $startDiv.find('.thumb'),
-        $endDiv = $container.find('.end.container'),
-        $endThumb = $endDiv.find('.thumb'),
+        $start = $container.find('.start.handle'),
+        $startThumb = $start.find('.thumb'),
+        $end = $container.find('.end.handle'),
+        $endThumb = $end.find('.thumb'),
         $label = $container.find('.label'),
         bgCanvas = $bg[0], fgCanvas = $fg[0],
         bg = bgCanvas.getContext("2d"),
@@ -42,23 +42,15 @@
           span = event.getSpan();
           
       transform[transformProp] = 'rotate(' + (startAngle * 180 / Math.PI + 90) + 'deg)';
-      $startDiv.css(transform);
+      $start.css(transform);
       transform[transformProp] = 'rotate(' + (-startAngle * 180 / Math.PI - 90) + 'deg)';
       $startThumb.css(transform);
       transform[transformProp] = 'rotate(' + (endAngle * 180 / Math.PI + 90) + 'deg)';
-      $endDiv.css(transform);
+      $end.css(transform);
       transform[transformProp] = 'rotate(' + (-endAngle * 180 / Math.PI - 90) + 'deg)';
       $endThumb.css(transform);
 
       fg.clearRect(0,0,w,h);
-      
-/*
-      fg.beginPath();
-      fg.moveTo(10 * Math.cos(startAngle) + ctr.x, 10 * Math.sin(startAngle) + ctr.y);
-      fg.lineTo(innerRadius * Math.cos(startAngle) + ctr.x, innerRadius * Math.sin(startAngle) + ctr.y);
-      fg.strokeStyle = '#00a';
-      fg.stroke();
-*/
       
       fg.fillStyle = "rgba(0,0,170,.3)";//'#00a';//"rgba(187,187,187,.3)";
       for(var i = Math.floor(span / maia.TWELVE_HOURS); i >= 1; i--) {
@@ -74,15 +66,6 @@
         fg.fill();
       }
       
-/*
-      fg.beginPath();
-      fg.moveTo(10 * Math.cos(endAngle) + ctr.x, 10 * Math.sin(endAngle) + ctr.y);
-      fg.lineTo(innerRadius * Math.cos(endAngle) + ctr.x, innerRadius * Math.sin(endAngle) + ctr.y);
-      fg.strokeStyle = '#00a';
-      fg.stroke();
-*/
-
-
       if(event.get('isTransient')) {
         var angle = dragged == END ? endAngle : startAngle;
         angle = (angle + Math.PI/2).mod(2 * Math.PI);
@@ -104,16 +87,14 @@
       innerRadius = Math.min(w,h) * .5 - 28;
       outerRadius = Math.min(w,h) * .5 - 26;
       digitRadius = Math.min(w,h) * .5 - 15;
-      var handExtra = .1 * innerRadius;
       
-      $startDiv.find('img').css({
-        'height': innerRadius + handExtra,
-        'bottom': -handExtra
-      });
-      $endDiv.find('img').css({
-        'height': innerRadius + handExtra,
-        'bottom': -handExtra
-      });
+      var handleCss = {
+        'height': 1.1 * innerRadius,
+        'bottom': -.1 * innerRadius
+      };
+      $start.find('img').css(handleCss);
+      $end.find('img').css(handleCss);
+      
       var sz = .22 * innerRadius,
           d = .04 * innerRadius;
       $container.find('.thumb').css({
@@ -133,9 +114,6 @@
         
         var a, tick, cosa, sina,
             $digits = $container.find('.digits').empty();
-/*      var radgrad = bg.createRadialGradient(ctr.x, ctr.y, outerRadius ,ctr.x, ctr.y, outerRadius+7);
-        radgrad.addColorStop(0, 'rgba(255,255,255,1)');//'#ff0000');
-        radgrad.addColorStop(1, 'rgba(255,255,255,0)');//'#0000ff');*/
         for(var i=0; i<144; i++) {
           a = 2 * Math.PI * i/144;
           cosa = Math.round(10000 * Math.cos(a) ) / 10000;
