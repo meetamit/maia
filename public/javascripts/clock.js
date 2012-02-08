@@ -39,15 +39,17 @@
       if(!w * h) { return; }
       var startAngle = Clock.dateToRads(event.get("start")),
           endAngle = Clock.dateToRads(event.get("end")),
+          startRotation = Math.round(2 * (startAngle * 180 / Math.PI + 90)) / 2,
+          endRotation = Math.round(2 * (endAngle * 180 / Math.PI + 90)) / 2,
           span = event.getSpan();
           
-      transform[transformProp] = 'rotate(' + (startAngle * 180 / Math.PI + 90) + 'deg)';
+      transform[transformProp] = 'rotate(' + startRotation + 'deg)';
       $start.css(transform);
-      transform[transformProp] = 'rotate(' + (-startAngle * 180 / Math.PI - 90) + 'deg)';
+      transform[transformProp] = 'rotate(' + (-startRotation) + 'deg)';
       $startThumb.css(transform);
-      transform[transformProp] = 'rotate(' + (endAngle * 180 / Math.PI + 90) + 'deg)';
+      transform[transformProp] = 'rotate(' + endRotation + 'deg)';
       $end.css(transform);
-      transform[transformProp] = 'rotate(' + (-endAngle * 180 / Math.PI - 90) + 'deg)';
+      transform[transformProp] = 'rotate(' + (-endRotation) + 'deg)';
       $endThumb.css(transform);
 
       fg.clearRect(0,0,w,h);
