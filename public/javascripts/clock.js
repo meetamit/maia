@@ -52,11 +52,13 @@
 
       fg.clearRect(0,0,w,h);
       
+/*
       fg.beginPath();
       fg.moveTo(10 * Math.cos(startAngle) + ctr.x, 10 * Math.sin(startAngle) + ctr.y);
       fg.lineTo(innerRadius * Math.cos(startAngle) + ctr.x, innerRadius * Math.sin(startAngle) + ctr.y);
       fg.strokeStyle = '#00a';
       fg.stroke();
+*/
       
       fg.fillStyle = "rgba(0,0,170,.3)";//'#00a';//"rgba(187,187,187,.3)";
       for(var i = Math.floor(span / maia.TWELVE_HOURS); i >= 1; i--) {
@@ -72,11 +74,13 @@
         fg.fill();
       }
       
+/*
       fg.beginPath();
       fg.moveTo(10 * Math.cos(endAngle) + ctr.x, 10 * Math.sin(endAngle) + ctr.y);
       fg.lineTo(innerRadius * Math.cos(endAngle) + ctr.x, innerRadius * Math.sin(endAngle) + ctr.y);
       fg.strokeStyle = '#00a';
       fg.stroke();
+*/
 
 
       if(event.get('isTransient')) {
@@ -100,18 +104,25 @@
       innerRadius = Math.min(w,h) * .5 - 28;
       outerRadius = Math.min(w,h) * .5 - 26;
       digitRadius = Math.min(w,h) * .5 - 15;
+      var handExtra = .1 * innerRadius;
       
-      $startDiv.find('img').css('height', innerRadius);
-      $endDiv.find('img').css('height', innerRadius);
-      var sz = .21 * innerRadius,
-          d = .03 * innerRadius;
+      $startDiv.find('img').css({
+        'height': innerRadius + handExtra,
+        'bottom': -handExtra
+      });
+      $endDiv.find('img').css({
+        'height': innerRadius + handExtra,
+        'bottom': -handExtra
+      });
+      var sz = .22 * innerRadius,
+          d = .04 * innerRadius;
       $container.find('.thumb').css({
-        'top': -innerRadius * .76,
+        'top': -innerRadius * .73,//.76,
         'width': sz,
         'height': sz,
-        'line-height': sz + 'px',
+        'line-height': (sz * (sz < 26 ? .95 : 1)) + 'px',
         'right': d,
-        'font-size': sz < 25 ? '8px' : '9px'
+        'font-size': sz < 26 ? '8px' : '9px'
       });
       $endThumb.css('left', d);
       
