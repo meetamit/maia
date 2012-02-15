@@ -32,15 +32,24 @@
       if(justDoIt === true || event.hasChanged('start') || event.hasChanged('end')) {
         var x0 = (event.get('start') - ms0) / mspp,
             x1 = (event.get('end') - ms0) / mspp;
+        
+        var ml = event.isEndImplied() ? 3 : 6;
+        if(x1 - x0 < ml) {
+          x1 += (ml - (x1 - x0)) * 1;
+        }
+        // if(x1 - x0 < ml) {
+        //   x0 -= x1 - x0;
+        // }
+        
         event.$seg.css({
           left: Math.round(x0),
           right: Math.round(l - x1)
         });
         
-        if(event.hasChanged('impliedEnd')) {
+        if(justDoIt === true || event.hasChanged('impliedEnd')) {
           if(event.get('impliedEnd') == null)
             event.$seg.removeClass('ongoing');
-          else if(event.previous('impliedEnd') == null)
+          else if(justDoIt === true || event.previous('impliedEnd') == null)
             event.$seg.addClass('ongoing');
         }
       }
