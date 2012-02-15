@@ -93,13 +93,13 @@
   left:0;
 }
 .clock .cowl {
-  width:9%;
-  height:9%;
+  width:8.1%;
+  height:8.1%;
   left:50%;
   top:50%;
   position:absolute;
-  margin-left:-4.5%;
-  margin-top:-4.5%;
+  margin-left:-4.05%;
+  margin-top:-4.05%;
   border-radius:100px;
   background: -moz-radial-gradient(35% 35%, ellipse cover, #555 0%, #111 95%); /* FF3.6+ */
   background: -webkit-gradient(radial, 35% 35%, 0px, center center, 100%, color-stop(0%,#555), color-stop(95%,#111)); /* Chrome,Safari4+ */

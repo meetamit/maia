@@ -33,12 +33,19 @@
         var x0 = (event.get('start') - ms0) / mspp,
             x1 = (event.get('end') - ms0) / mspp;
         event.$seg.css({
-          left: x0,
-          right: l - x1
+          left: Math.round(x0),
+          right: Math.round(l - x1)
         });
+        
+        if(event.hasChanged('impliedEnd')) {
+          if(event.get('impliedEnd') == null)
+            event.$seg.removeClass('ongoing');
+          else if(event.previous('impliedEnd') == null)
+            event.$seg.addClass('ongoing');
+        }
       }
-      if(justDoIt === true || event.hasChanged('isCurrent')) {
-        if(event.get('isCurrent'))
+      if(justDoIt === true || event.hasChanged('isEditing')) {
+        if(event.get('isEditing'))
           event.$seg.addClass('current');
         else
           event.$seg.removeClass('current');
@@ -50,8 +57,8 @@
       update(event, true);
       
       event.$seg.bind('click', function() {
-        if(!event.get("isCurrent")) {
-          _this.trigger('selected', event);
+        if(!event.get("isEditing")) {
+          _this.trigger('select', event);
         }
       });
     }
@@ -68,9 +75,9 @@
             hoursStr;
             
         if(hours % 12 == 0)
-          hoursStr = hours == 12 ? 'N<span>OON</span>' : 'M<span>IDNIGHT</span>';
+          hoursStr = hours == 12 ? 'N<span>oon</span>' : 'M<span>idnight</span>';
         else
-          hoursStr = hours % 12 + (hours < 12 ? '<span>AM</span>' : '<span>PM</span>');
+          hoursStr = hours % 12 + (hours < 12 ? '<span>am</span>' : '<span>pm</span>');
             
         // hoursStr = hours % 12 == 0 ? (hours == 12 ? 'noon' : 'mid\'nt') : (hours % 12 + (hours < 12 ? '<span>AM</span>' : '<span>PM</span>')),
         $('<div class="tick">' + hoursStr + '</div>').css({

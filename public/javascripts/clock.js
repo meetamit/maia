@@ -39,8 +39,8 @@
       if(!w * h) { return; }
       var startAngle = Clock.dateToRads(event.get("start")),
           endAngle = Clock.dateToRads(event.get("end")),
-          startRotation = Math.round(2 * (startAngle * 180 / Math.PI + 90)) / 2,
-          endRotation = Math.round(2 * (endAngle * 180 / Math.PI + 90)) / 2,
+          startRotation = Math.ceil(2 * (startAngle * 180 / Math.PI + 90)) / 2,
+          endRotation = Math.ceil(2 * (endAngle * 180 / Math.PI + 90)) / 2,
           span = event.getSpan();
           
       transform[transformProp] = 'rotate(' + startRotation + 'deg)';
@@ -91,8 +91,8 @@
       digitRadius = Math.min(w,h) * .5 - 15;
       
       var handleCss = {
-        'height': 1.1 * innerRadius,
-        'bottom': -.1 * innerRadius
+        'height': 1.09 * innerRadius,
+        'bottom': -.09 * innerRadius
       };
       $start.find('img').css(handleCss);
       $end.find('img').css(handleCss);

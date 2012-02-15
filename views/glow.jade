@@ -6,6 +6,7 @@ html
     
     link(rel='stylesheet', href='/stylesheets/boilerplate.css')
     link(rel='stylesheet', href='/stylesheets/clock.css')
+    link(rel='stylesheet', href='/stylesheets/strip.css')
     link(rel='stylesheet', href='/stylesheets/glow.css')
     
     script(type='text/javascript', src='/javascripts/lib/zepto.min.js')
@@ -23,7 +24,7 @@ html
     script(type='text/javascript')
       $(function() {
         new maia.Glow();
-        $('.sleep .add').trigger('click');
+        // $('.sleep .add').trigger('click');
       });
     script(type='text/javascript')
       $(function() {
@@ -36,6 +37,7 @@ html
   body.unselectable
     .chart
       .date Today
+      .strip
     ul.launchpad.panel
       li.sleep
         label Sleep
