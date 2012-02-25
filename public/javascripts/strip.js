@@ -29,13 +29,15 @@
         });
         return;
       }
+      if(event.get('isNew') && !event.$seg.hasClass('new')) { event.$seg.addClass('new'); }
+      else if(!event.get('isNew') && event.$seg.hasClass('new')) { event.$seg.removeClass('new'); }
       if(justDoIt === true || event.hasChanged('start') || event.hasChanged('end')) {
         var x0 = (event.get('start') - ms0) / mspp,
             x1 = (event.get('end') - ms0) / mspp;
         
         var ml = event.isEndImplied() ? 3 : 6;
         if(x1 - x0 < ml) {
-          x1 += (ml - (x1 - x0)) * 1;
+          x0 -= (ml - (x1 - x0)) * 1;
         }
         // if(x1 - x0 < ml) {
         //   x0 -= x1 - x0;

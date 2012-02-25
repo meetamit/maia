@@ -47,10 +47,16 @@
   top:0;
   height:13px;
   background-color:rgba(136,182,245,.9);
+  z-index:10;
 /*  -webkit-animation-name: glow;
   -webkit-animation-duration: 1s;
   -webkit-animation-iteration-count:infinite;
 */}
+
+.strip .seg.new {
+/*  background-color:rgba(204,0,0,.75) !important;*/
+  background-color:rgba(136,182,245,.7);
+}
 
 .strip .legend {
   position: absolute;

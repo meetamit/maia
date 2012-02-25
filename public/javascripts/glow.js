@@ -9,11 +9,13 @@
         sleep = new ListEntry( $launchpad.find('.sleep'), events),
         notes = new ListEntry( $launchpad.find('.notes') ),
         editor = new EventEditor( $editor );
-        
+
     sleep.bind('add', function() {
       var event = new maia.Event({
-        start: maia.Event.getNow(),//new Date(2000,0,1,2,50),//maia.Event.getNow(1200000)
-        end: null//maia.Event.getNow()//null
+        isNew: true,
+        start: maia.Event.getNow(),
+        end: null,
+        creator: sleep
       });
       events.add(event);
       $editor.removeClass('out');
@@ -29,8 +31,8 @@
     editor.bind('x', function(event) {
       $editor.addClass('out');
       $launchpad.removeClass('out');
-      editor.edit(null);
       events.remove(event);
+      editor.edit(null);
       event.destroy();
       event = null;
     });
@@ -46,6 +48,18 @@
     var $add = $container.find('.add'),
         _this = this;
     $add.bind('click', function() { _this.trigger('add'); });
+    
+    if(events) {
+      var $ing = $container.find('.ing');
+      (this.update = function() {
+        if(events.any(function(event) { return event.isEndImplied(); })) {
+          $ing.show();
+        }
+        else {
+          $ing.hide();
+        }
+      })();
+    }
   }
   
   function EventEditor($container) {
@@ -66,7 +80,11 @@
 
     this.edit = function(_event) {
       if(event) {
-        event.set({ isEditing: false });
+        event.set({ 
+          isEditing: false,
+          isNew: false
+        });
+        event.get('creator') && event.get('creator').update();// Update list entry creator (i.e sleep ListEntry updating it's $ing)
         event.unbind('change', update);
       }
         
@@ -81,6 +99,26 @@
     };
     
     function update(model) {
+      if(!model || model.hasChanged('isNew')) {
+        $x.text(event.get('isNew') ? 'Cancel' : 'Delete');
+      }
+
+      var isEndImplied = null;
+      if(!model) {
+        isEndImplied = event.isEndImplied();
+      }
+      else if(model.hasChanged('impliedEnd')) {
+        if(model.previous('impliedEnd') == null) {
+          isEndImplied = true;
+        }
+        else if(model.get('impliedEnd') == null) {
+          isEndImplied = model.isEndImplied();
+        }
+      }
+      if(isEndImplied !== null) {
+        $ok.text(isEndImplied ? 'Close' : 'Done');
+      }
+      
       if(!model || model.hasChanged('fStart')) {
         $start.find('.t').html(event.get('fStart').toString());
       }

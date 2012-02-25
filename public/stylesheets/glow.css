@@ -30,6 +30,7 @@ body {
 .panel .notes { color:rgba(253,252,164,.8); }
 
 .launchpad label, .event_editor > label { padding-left:8px; }
+.launchpad label .ing { font-weight:bold; color:#8dc0ff; }
 
 .launchpad li { position:relative; border-bottom:1px solid rgba(0,0,0,.2); border-top:1px solid rgba(255,255,255,.2); }
 .launchpad li:first-child { border-top-color:transparent; } .launchpad li:last-child { border-bottom:none; }
