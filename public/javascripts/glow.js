@@ -65,6 +65,7 @@
   function EventEditor($container) {
     _.extend(this, Backbone.Events);
     var event,
+        $ing = $container.find('label .ing'),
         $ok = $container.find('.ok'),
         $x = $container.find('.x'),
         $start = $container.find('.start.field'),
@@ -117,6 +118,7 @@
       }
       if(isEndImplied !== null) {
         $ok.text(isEndImplied ? 'Close' : 'Done');
+        $ing[isEndImplied ? 'show' : 'hide']();
       }
       
       if(!model || model.hasChanged('fStart')) {
