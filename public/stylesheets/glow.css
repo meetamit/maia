@@ -12,12 +12,18 @@ body {
 }
   
 .action {
-   border-radius:5px; height:30px;
+   border-radius:5px; height:30px; cursor:pointer;
    -webkit-box-shadow:inset 0 2px 2px rgba(255,255,255,.5);
    background: -webkit-linear-gradient(top, rgba(220,220,220,.3) 0%, rgba(115,115,115,.3) 35%, rgba(15,15,15,.3) 66%, rgba(0,0,0,.7) 100%);
 }
 
 .action.add { line-height:27px; text-align:center; width:30px; position:absolute; right:7px; top:6px; }
+
+.action.ongoing { text-align:center; position:absolute; right:45px; top:6px; line-height:30px; color:#8dc0ff; /*font-weight:bold; */}
+.action.ongoing .duration { display:inline-block; border-right:1px solid rgba(0,0,0,.4); padding:0 6px 0 8px; }
+.action.ongoing .duration em { font-size:18px; vertical-align:text-top; letter-spacing:-1px; }
+.action.ongoing .duration span { line-height:22px; font-size:10px; vertical-align:text-top; }
+.action.ongoing .pause { display:inline-block; width:30px; font-size:14px; letter-spacing:1px; border-left:1px solid rgba(255,255,255,.2); vertical-align:top; font-weight:bold; }
 
 .panel {
   position:absolute; left:9px; right:9px; margin-top:9px; border-radius:12px; background-color:rgba(0,0,0,.4);

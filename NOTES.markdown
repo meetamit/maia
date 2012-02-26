@@ -32,3 +32,4 @@ When game launches, it locks the app. If later waking up in home menu, without p
 
 rt
 61251
+137196

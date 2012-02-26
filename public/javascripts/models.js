@@ -148,10 +148,10 @@
           strMinutes = String(modMinutes + 100).substr(1),
           hours = Math.floor(minutes / 60);
       return [
-        hours,
-        String(modMinutes + 100).substr(1),
-        String(modSeconds + 100).substr(1)
-      ].join(':');
+        '<em>', hours, ':',
+        String(modMinutes + 100).substr(1), '</em>',
+        '<span>:', String(modSeconds + 100).substr(1), '</span>'
+      ].join('');
     }
   });
   
