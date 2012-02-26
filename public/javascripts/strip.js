@@ -37,12 +37,13 @@
         
         var ml = event.isEndImplied() ? 3 : 6;
         if(x1 - x0 < ml) {
-          x0 -= (ml - (x1 - x0)) * 1;
+          x0 -= Math.min(3, ml - (x1 - x0));
+          if(x1 - x0 < ml) {
+            x1 += Math.min(3, ml - (x1 - x0));
+          }
+          
         }
-        // if(x1 - x0 < ml) {
-        //   x0 -= x1 - x0;
-        // }
-        
+
         event.$seg.css({
           left: Math.round(x0),
           right: Math.round(l - x1)
