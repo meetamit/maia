@@ -41,7 +41,6 @@
           if(x1 - x0 < ml) {
             x1 += Math.min(3, ml - (x1 - x0));
           }
-          
         }
 
         event.$seg.css({

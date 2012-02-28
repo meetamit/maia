@@ -7,12 +7,14 @@
         events = new Backbone.Collection(),
         strip = new maia.Strip( $('.strip'), events ),
         sleep = new ListEntry( $launchpad.find('.sleep'), events),
+        eat = new ListEntry( $launchpad.find('.eat') ),
         notes = new ListEntry( $launchpad.find('.notes') ),
         editor = new EventEditor( $editor );
 
     sleep.bind('add', function() {
       var event = new maia.Event({
         isNew: true,
+        isRange: true,
         start: maia.Event.getNow(),
         end: null,
         creator: sleep
@@ -21,6 +23,16 @@
       openEditor(event);
     });
     sleep.bind('select', function(event) {
+      openEditor(event);
+    });
+    
+    eat.bind('add', function() {
+      var event = new maia.Event({
+        isNew: true,
+        isRange: false,
+        start: maia.Event.getNow()
+      });
+      events.add(event);
       openEditor(event);
     });
     

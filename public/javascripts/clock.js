@@ -17,10 +17,17 @@
   function Clock($container, event) {
     var $bg = $container.find('canvas.bg'),
         $fg = $container.find('canvas.fg'),
+        
+        // $start & $end are for range events
         $start = $container.find('.start.handle'),
         $startThumb = $start.find('.thumb'),
         $end = $container.find('.end.handle'),
         $endThumb = $end.find('.thumb'),
+        
+        // $time is for non-range events
+        $time = $container.find('.time.handle'),
+        $timeThumb = $time.find('.thumb'),
+        
         $label = $container.find('.label'),
         bgCanvas = $bg[0], fgCanvas = $fg[0],
         bg = bgCanvas.getContext("2d"),
@@ -28,9 +35,22 @@
         w, h, ctr, innerRadius, outerRadius, digitRadius,
         transform = {}, transformProp = maia.TRANSFORM_PROP;
         
+    var DISPLAY_BLOCK = { display:'block' },
+        DISPLAY_NONE = { display:'none' };
     this.setEvent = function(_event) {
       event && event.unbind('change', update);
       event = _event;
+      if(event.get('isRange')) {
+        $start.css(DISPLAY_BLOCK);
+        $end.css(DISPLAY_BLOCK);
+        $time.css(DISPLAY_NONE);
+      }
+      else {
+        fg.clearRect(0,0,w,h);
+        $start.css(DISPLAY_NONE);
+        $end.css(DISPLAY_NONE);
+        $time.css(DISPLAY_BLOCK);
+      }
       event.bind('change', update);
       update();
     };
@@ -41,19 +61,35 @@
           endAngle = Clock.dateToRads(event.get("end")),
           startRotation = Math.ceil(2 * (startAngle * 180 / Math.PI + 90)) / 2,
           endRotation = Math.ceil(2 * (endAngle * 180 / Math.PI + 90)) / 2,
-          span = event.getSpan();
+          span = event.getSpan(),
+          isRange = event.get('isRange');
+
+      if(event.get('isTransient')) {
+        var angle = dragged == END ? endAngle : startAngle;
+        angle = (angle + Math.PI/2).mod(2 * Math.PI);
+        var f = angle / 2,
+            pt = { x:(innerRadius*.7) * Math.sin(angle) + ctr.x, y:(innerRadius*.7) * Math.cos(angle) + ctr.y };
+        $label.css({
+          right:   -pt.x + h,
+          bottom: pt.y + 40 * Math.pow( Math.sin(angle / 2), 2 ) + 10 + 30 * Math.max(0, Math.sin(angle))
+        }).html(
+          ( dragged == END ? event.get('fEnd') : event.get('fStart') ).split('<br>').join('').toLowerCase()
+        );
+      }
           
       transform[transformProp] = 'rotate(' + startRotation + 'deg)';
-      $start.css(transform);
+      (isRange ? $start : $time).css(transform);
       transform[transformProp] = 'rotate(' + (-startRotation) + 'deg)';
-      $startThumb.css(transform);
+      (isRange ? $startThumb : $timeThumb).css(transform);
+
+      if(!isRange) { return; }
+      
       transform[transformProp] = 'rotate(' + endRotation + 'deg)';
       $end.css(transform);
       transform[transformProp] = 'rotate(' + (-endRotation) + 'deg)';
       $endThumb.css(transform);
 
       fg.clearRect(0,0,w,h);
-      
       fg.fillStyle = "rgba(0,0,170,.3)";//'#00a';//"rgba(187,187,187,.3)";
       for(var i = Math.floor(span / maia.TWELVE_HOURS); i >= 1; i--) {
         fg.beginPath();
@@ -66,19 +102,6 @@
         fg.arc(ctr.x, ctr.y, innerRadius, startAngle, endAngle, false);
         fg.arc(ctr.x, ctr.y, 10, endAngle, startAngle, true);
         fg.fill();
-      }
-      
-      if(event.get('isTransient')) {
-        var angle = dragged == END ? endAngle : startAngle;
-        angle = (angle + Math.PI/2).mod(2 * Math.PI);
-        var f = angle / 2,
-            pt = { x:(innerRadius*.7) * Math.sin(angle) + ctr.x, y:(innerRadius*.7) * Math.cos(angle) + ctr.y };
-        $label.css({
-          right:   -pt.x + h,
-          bottom: pt.y + 40 * Math.pow( Math.sin(angle / 2), 2 ) + 10 + 30 * Math.max(0, Math.sin(angle))
-        }).html(
-          ( dragged == END ? event.get('fEnd') : event.get('fStart') ).split('<br>').join('').toLowerCase()
-        );
       }
     }
 
@@ -96,6 +119,10 @@
       };
       $start.find('img').css(handleCss);
       $end.find('img').css(handleCss);
+      $time.find('img').css(handleCss).bind('load', function() {
+        var $this = $(this);
+        $this.css({ left:-$this.width()/2 });
+      });
       
       var sz = .22 * innerRadius,
           d = .04 * innerRadius;
@@ -104,10 +131,11 @@
         'width': sz,
         'height': sz,
         'line-height': (sz * (sz < 26 ? .95 : 1)) + 'px',
-        'right': d,
         'font-size': sz < 26 ? '8px' : '9px'
       });
+      $startThumb.css('right', d);
       $endThumb.css('left', d);
+      $timeThumb.css('left', -sz/2);
       
       
       if(w * h) {
@@ -166,6 +194,7 @@
     updateSize();
     $startThumb.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
     $endThumb.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
+    $timeThumb.bind($.browser.touchDevice ? 'touchstart' : 'mousedown', dragStart);
 
     var dragged,
         date0, date1ms,
@@ -176,7 +205,7 @@
     function dragStart(e) {
       $container.addClass("dragged");
       e.preventDefault();
-      if(e.target == $startThumb[0]) {
+      if(e.target == $startThumb[0] || e.target == $timeThumb[0]) {
         dragged = START;
         date0 = event.get(START);
       }

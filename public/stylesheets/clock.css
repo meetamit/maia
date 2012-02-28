@@ -61,12 +61,16 @@
 
 .clock .handle img {
   position:absolute;
-  right:0;
   pointer-events:none;
+}
+.clock .start.handle img {
+  right:0;
 }
 .clock .end.handle img {
   left:0;
   -webkit-transform:scale(-1,1);
+}
+.clock .time.handle img {
 }
 
 .clock .thumb {

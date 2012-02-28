@@ -13,23 +13,33 @@
     },
     
     set: function(attributes, options) {
-      // START pushes END
-      if(attributes[START] > (attributes[END] || this.get(END))) {
-        attributes[END] = new Date(attributes[START]);
+      if(attributes[START] && !this.get('isRange')) {
+        attributes[END] = new Date(attributes[START]);// START sets END
+      }
+      else if(attributes[START] > (attributes[END] || this.get(END))) {
+        attributes[END] = new Date(attributes[START]);// START pushes END
       }
       
       // Can't exceed present
       var diff = Date.now() - attributes[END];
-      if(diff < 100 ) {
-        if(diff < 0) {
-          attributes[IMPLIED_END] = Event.getNow();
-        }
-        else {
-          attributes[IMPLIED_END] = attributes[END];
-        }
+      if(this.get('isRange')) {
+        if(diff < 100) {
+          if(diff < 0) {
+            attributes[IMPLIED_END] = Event.getNow();
+          }
+          else {
+            attributes[IMPLIED_END] = attributes[END];
+          }
         
-        if(attributes[START] && attributes[START] > attributes[IMPLIED_END]) {
-          attributes[START] = attributes[IMPLIED_END];
+          if(attributes[START] && attributes[START] > attributes[IMPLIED_END]) {
+            attributes[START] = attributes[IMPLIED_END];
+          }
+        }
+      }
+      else {
+        if(diff < 100) {
+          attributes[START] = Event.getNow();
+          attributes[END] = Event.getNow();
         }
       }
       
