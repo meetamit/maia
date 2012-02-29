@@ -13,11 +13,11 @@
 
     sleep.bind('add', function() {
       var event = new maia.Event({
+        creator: this,
         isNew: true,
         isRange: true,
         start: maia.Event.getNow(),
-        end: null,
-        creator: sleep
+        end: null
       });
       events.add(event);
       openEditor(event);
@@ -28,6 +28,7 @@
     
     eat.bind('add', function() {
       var event = new maia.Event({
+        creator: this,
         isNew: true,
         isRange: false,
         start: maia.Event.getNow()
@@ -62,6 +63,7 @@
   
   function ListEntry($container, events) {
     _.extend(this, Backbone.Events);
+    this.$container = $container;
     var $add = $container.find('.add'),
         _this = this;
     $add.bind('click', function() { _this.trigger('add'); });
@@ -102,6 +104,9 @@
         _this.update();
       });
     }
+    else {
+      this.update = function() {};// no-op
+    }
     
     function findOngoingEvent() {
       return events.find(function(event) { return event.isEndImplied(); });
@@ -111,7 +116,6 @@
   function EventEditor($container) {
     _.extend(this, Backbone.Events);
     var event,
-        $ing = $container.find('label .ing'),
         $ok = $container.find('.ok'),
         $x = $container.find('.x'),
         $start = $container.find('.start.field'),
@@ -131,7 +135,8 @@
           isEditing: false,
           isNew: false
         });
-        event.get('creator') && event.get('creator').update();// Update list entry creator (i.e sleep ListEntry updating it's $ing)
+        event.get('creator').update();// Update list entry creator (i.e sleep ListEntry updating it's $ing)
+        $container.removeClass(event.get('creator').$container.attr('class'));
         event.unbind('change', update);
       }
         
@@ -141,6 +146,18 @@
       
       event.bind('change', update);
       event.set({ isEditing: true });
+      
+      var $creator = event.get('creator').$container;
+      $container.addClass($creator.attr('class'));
+      $container.children().eq(0).html(  $creator.find('label').html()  );
+      if(event.get('isRange')) {
+        $start.find('label').text('FROM');
+        $end.show();
+      }
+      else {
+        $start.find('label').text('TIME');
+        $end.hide();
+      }
       update(null);
       clock.setEvent(event);
     };
@@ -164,7 +181,7 @@
       }
       if(isEndImplied !== null) {
         $ok.text(isEndImplied ? 'Close' : 'Done');
-        $ing[isEndImplied ? 'show' : 'hide']();
+        $container.find('label .ing')[isEndImplied ? 'show' : 'hide']();
       }
       
       if(!model || model.hasChanged('fStart')) {

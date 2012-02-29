@@ -12,7 +12,7 @@ body {
 }
   
 .action {
-   border-radius:5px; height:30px; cursor:pointer;
+   border-radius:5px; height:30px; cursor:pointer; color:#fff;
    -webkit-box-shadow:inset 0 2px 2px rgba(255,255,255,.5);
    background: -webkit-linear-gradient(top, rgba(220,220,220,.3) 0%, rgba(115,115,115,.3) 35%, rgba(15,15,15,.3) 66%, rgba(0,0,0,.7) 100%);
 }
@@ -30,10 +30,10 @@ body {
   color:#fff; line-height:42px; /*text-shadow:0 0 4px rgba(255,255,190,.7);*/
   -webkit-box-shadow:inset 0 2px 2px rgba(255,255,255,.5);
 }
-.panel .sleep { color:rgba(141,192,255,.8); }
-.panel .eat { color:rgba(154,255,141,.8); }
-.panel .poop { color:rgba(255,141,251,.8); }
-.panel .notes { color:rgba(253,252,164,.8); }
+.sleep, .sleep .add { color:rgba(141,192,255,.8); }
+.eat, .eat .add { color:rgba(154,255,141,.8); }
+.poop, .poop .add { color:rgba(255,141,251,.8); }
+.notes, .notes .add { color:rgba(253,252,164,.8); }
 
 .launchpad label, .event_editor > label { padding-left:8px; }
 .launchpad label .ing, .event_editor > label .ing { font-weight:bold; color:#8dc0ff; }
@@ -60,6 +60,7 @@ body {
 .event_editor .end.field { right:8px; text-align:right; }
 .event_editor .field > * { display:block; }
 .event_editor .field label { font-weight:bold; }
+.event_editor .field .t { color:#fff; }
 .event_editor .field .t > * { display:inline-block; vertical-align:baseline; }
 .event_editor .field em { font-size:22px; line-height:21px; }
 
