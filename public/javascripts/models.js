@@ -13,7 +13,7 @@
     },
     
     set: function(attributes, options) {
-      if(attributes[START] && !this.get('isRange')) {
+      if(attributes[START] && !this.get('isRange') && !attributes['isRange']) {
         attributes[END] = new Date(attributes[START]);// START sets END
       }
       else if(attributes[START] > (attributes[END] || this.get(END))) {
