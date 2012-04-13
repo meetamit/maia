@@ -83,16 +83,27 @@
   line-height:30px;
   text-align:center;
   font-weight:bold;
-  color:#1b2368;
   border-radius:100px;
   border-top:1px solid rgba(255,255,255,.5);
   border-bottom:1px solid rgba(0,0,0,.5);
   cursor:pointer;
+}
+
+.sleep .clock .thumb {
+  color:#1b2368;
   background: #7b9fbc; /* Old browsers */
   background: -moz-radial-gradient(center, ellipse cover, #8cafcc 0%, #52699e 95%); /* FF3.6+ */
   background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#8cafcc), color-stop(95%,#52699e)); /* Chrome,Safari4+ */
   background: -webkit-radial-gradient(center, ellipse cover, #8cafcc 0%,#52699e 95%); /* Chrome10+,Safari5.1+ */
 }
+.eat .clock .thumb {
+  color:#1b4e1b;
+  background: #7b9fbc; /* Old browsers */
+  background: -moz-radial-gradient(center, ellipse cover, #69cd69 0%, #407543 95%); /* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#69cd69), color-stop(95%,#407543)); /* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, ellipse cover, #69cd69 0%,#407543 95%); /* Chrome10+,Safari5.1+ */
+}
+
 .clock .end .thumb {
   left:0;
 }
