@@ -16,7 +16,7 @@
       $legend.empty();
       l = $container.width();
       ms0 = Math.floor((Date.now() - maia.TIME_ZONE_OFFSET) / maia.TWENTY_FOUR_HOURS) * maia.TWENTY_FOUR_HOURS + maia.TIME_ZONE_OFFSET;
-      // ms0 -= maia.TWELVE_HOURS;// TEMP DEBUG
+      ms0 -= maia.TWELVE_HOURS;// TEMP DEBUG
       mspp = maia.TWENTY_FOUR_HOURS / l;
       drawLegend();
       update();

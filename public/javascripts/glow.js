@@ -4,22 +4,38 @@
     var $launchpad = $('.launchpad'),
         $editor = $('.event_editor'),
     
-        events = new Backbone.Collection(),
+        events = new (Backbone.Collection.extend({
+          model: maia.Event,
+          localStorage: new Store('maia-events'),
+          parse: function(response) {
+            _.each(response, function(hash) {
+              hash.start = new Date( Date.parse(hash.start) );
+              hash.end = hash.end && new Date( Date.parse(hash.end) );
+              hash.impliedEnd = hash.impliedEnd && new Date( Date.parse(hash.impliedEnd) );
+            });
+            return response;
+          }
+        }))(),
         strip = new maia.Strip( $('.strip'), events ),
-        sleep = new ListEntry( $launchpad.find('.sleep'), events),
-        eat = new ListEntry( $launchpad.find('.eat') ),
+        sleep = new ListEntry( $launchpad.find('.sleep'), 'sleep', events),
+        eat = new ListEntry( $launchpad.find('.eat'), 'eat' ),
         notes = new ListEntry( $launchpad.find('.notes') ),
         editor = new EventEditor( $editor );
 
+    events.fetch({ add:true });
+    var editing = events.find(function(event) { return event.get('isEditing'); });
+    if(editing) {
+      openEditor(editing);
+    }
+
     sleep.bind('add', function() {
-      var event = new maia.Event({
-        creator: this,
+      var event = events.create({
+        creator: this.type,
         isNew: true,
         isRange: true,
         start: maia.Event.getNow(),
         end: null
       });
-      events.add(event);
       openEditor(event);
     });
     sleep.bind('select', function(event) {
@@ -28,7 +44,7 @@
     
     eat.bind('add', function() {
       var event = new maia.Event({
-        creator: this,
+        creator: this.type,
         isNew: true,
         isRange: false,
         start: maia.Event.getNow()
@@ -39,11 +55,11 @@
     
     editor.bind('ok', function(event) {
       openList();
+      event.save();
     });
     editor.bind('x', function(event) {
-      events.remove(event);
-      openList();
       event.destroy();
+      openList();
     });
     strip.bind('select', function(event) {
       openEditor(event);
@@ -61,8 +77,12 @@
     }
   }
   
-  function ListEntry($container, events) {
+  function ListEntry($container, type, events) {
     _.extend(this, Backbone.Events);
+    if(type) { 
+      this.type = type;
+      ListEntry[this.type] = this;
+    }
     this.$container = $container;
     var $add = $container.find('.add'),
         _this = this;
@@ -130,13 +150,14 @@
     $x.bind('click', function() { _this.trigger('x', event); });
 
     this.edit = function(_event) {
-      if(event) {
-        event.set({ 
+      if(event && event.collection) {// event.collection is null if event is destroyed
+        event.save({ 
           isEditing: false,
           isNew: false
         });
-        event.get('creator').update();// Update list entry creator (i.e sleep ListEntry updating it's $ing)
-        $container.removeClass(event.get('creator').$container.attr('class'));
+        var creator = ListEntry[event.get('creator')];
+        creator.update();// Update list entry creator (i.e sleep ListEntry updating it's $ing)
+        $container.removeClass(creator.$container.attr('class'));
         event.unbind('change', update);
       }
         
@@ -145,11 +166,11 @@
       if(!event) return;
       
       event.bind('change', update);
-      event.set({ isEditing: true });
+      event.save({ isEditing: true });
       
-      var $creator = event.get('creator').$container;
-      $container.addClass($creator.attr('class'));
-      $container.children().eq(0).html(  $creator.find('label').html()  );
+      var creator = ListEntry[event.get('creator')];
+      $container.addClass(creator.$container.attr('class'));
+      $container.children().eq(0).html(  creator.$container.find('label').html()  );
       if(event.get('isRange')) {
         $start.find('label').text('FROM');
         $end.show();
@@ -165,6 +186,10 @@
     function update(model) {
       if(!model || model.hasChanged('isNew')) {
         $x.text(event.get('isNew') ? 'Cancel' : 'Delete');
+      }
+      
+      if(model && model.hasChanged('isTransient') && !model.get('isTransient')) {
+        event.save();
       }
 
       var isEndImplied = null;

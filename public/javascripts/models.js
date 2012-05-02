@@ -73,7 +73,7 @@
         attributes[FORMATTED_END] = this.format(attributes[IMPLIED_END], true);
       }
       
-      Backbone.Model.prototype.set.call(this, attributes, options);
+      return Backbone.Model.prototype.set.call(this, attributes, options);
     },
     
     format: function(date, hasSeconds) {
@@ -128,8 +128,9 @@
       if(this.isEndImplied()) {
         clearInterval(this.get('impliedInterval'));
       }
+      Backbone.Model.prototype.destroy.call(this);
     },
-
+    
     getSpan: function() { return (this.get(END) || this.get(IMPLIED_END)) - this.get(START); }
   },
   
